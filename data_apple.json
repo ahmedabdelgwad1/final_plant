@@ -1,0 +1,171 @@
+{
+  "crop_ar": "تفاح",
+  "crop_en": "Apple",
+  "crop_type": "apple",
+  "diseases": [
+    {
+      "id": "APP_001",
+      "crop_type": "apple",
+      "disease_name_ar": "جرب التفاح",
+      "disease_name_en": "Apple Scab",
+      "scientific_name": "Venturia inaequalis",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "بقع زيتونية إلى سوداء متقشرة على الأوراق وتشوه وثقوب فلينية في الثمرة.",
+      "short_description_en": "Olive to black scabby lesions on leaves and corky deformities on fruit.",
+      "core_visual_identity": {
+        "ar": "بقع زيتونية داكنة على الأوراق تتحول لقشور فلينية سوداء على التفاحة",
+        "en": "Olive-dark spots on leaves turning to black corky scabs on apples"
+      },
+      "visual_features": {
+        "colors_ar": ["أخضر زيتوني", "أسود", "بني فليني"],
+        "colors_en": ["olive green", "black", "corky brown"],
+        "texture_ar": ["مخملي", "متقشر", "فليني خشن"],
+        "texture_en": ["velvety", "scabby", "rough corky"],
+        "shapes_ar": ["بقع غير منتظمة", "تشققات الثمرة"],
+        "shapes_en": ["irregular spots", "fruit cracks"],
+        "locations_ar": ["الأوراق", "الثمار"],
+        "locations_en": ["leaves", "fruits"],
+        "progression_ar": ["بقع زيتونية", "تشوه الثمرة", "تساقط الأوراق"],
+        "progression_en": ["olive spots", "fruit deformity", "leaf drop"]
+      },
+      "common_vlm_phrases_ar": ["التفاحة مشققة", "قشرة سودا خشنة", "بقع زيتوني غامقة"],
+      "common_vlm_phrases_en": ["black scabs", "cracked apple", "olive spots"],
+      "negative_match_indicators": {
+        "ar": ["بقع برتقالية فاقعة"],
+        "en": ["bright orange spots"]
+      },
+      "environmental_triggers_ar": ["الربيع البارد والرطب", "أمطار غزيرة"],
+      "environmental_triggers_en": ["cool wet spring", "heavy rain"],
+      "favorable_conditions_ar": "ينتشر في مواسم الربيع الممطرة عندما تبقى الأوراق مبللة.",
+      "treatment_chemical_ar": "رش كابتان أو مانكوزيب قبل تفتح البراعم.",
+      "treatment_organic_ar": "جمع الأوراق وحرقها، تقليم جيد للتهوية.",
+      "treatment_summary_ar": "الوقاية تبدأ من الخريف بجمع المخلفات، ورش المبيدات الفطرية مبكراً في الربيع.",
+      "treatment_summary_en": "Sanitation in fall and early spring preventative fungicides.",
+      "confidence_keywords": ["black scabs", "corky spots", "جرب"]
+    },
+    {
+      "id": "APP_002",
+      "crop_type": "apple",
+      "disease_name_ar": "صدأ التفاح",
+      "disease_name_en": "Cedar Apple Rust",
+      "scientific_name": "Gymnosporangium juniperi-virginianae",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "بقع برتقالية وصفراء فاقعة على السطح العلوي للأوراق وزوائد أنبوبية أسفلها.",
+      "short_description_en": "Bright orange/yellow spots on upper leaves and tube-like structures underneath.",
+      "core_visual_identity": {
+        "ar": "بقع برتقالية فاقعة جداً (لون الصدأ) محاطة بهالة حمراء",
+        "en": "Bright orange rust-colored spots surrounded by a red halo"
+      },
+      "visual_features": {
+        "colors_ar": ["برتقالي فاقع", "أصفر ذهبي", "أحمر محيطي"],
+        "colors_en": ["bright orange", "golden yellow", "red peripheral"],
+        "texture_ar": ["بقع ناعمة فوق", "زوائد أنبوبية أسفل الورقة"],
+        "texture_en": ["smooth top", "tube-like projections underneath"],
+        "shapes_ar": ["بقع دائرية واضحة"],
+        "shapes_en": ["distinct circular spots"],
+        "locations_ar": ["السطح العلوي للأوراق"],
+        "locations_en": ["upper leaves"],
+        "progression_ar": ["بقع صفراء", "تتحول للبرتقالي", "سقوط الأوراق"],
+        "progression_en": ["yellow spots", "turn orange", "early drop"]
+      },
+      "common_vlm_phrases_ar": ["بقع برتقالي منورة", "شكل الصدأ على الورق"],
+      "common_vlm_phrases_en": ["bright orange spots", "rust on leaves"],
+      "negative_match_indicators": {
+        "ar": ["قشور سوداء فلينية"],
+        "en": ["black corky scabs"]
+      },
+      "environmental_triggers_ar": ["وجود أشجار العرعر قريبة", "أمطار الربيع"],
+      "environmental_triggers_en": ["nearby cedar trees", "spring rains"],
+      "favorable_conditions_ar": "يتطلب انتقال بين أشجار العرعر والتفاح في الربيع الرطب.",
+      "treatment_chemical_ar": "استخدام مبيدات تحتوي على الميكلوبوتانيل.",
+      "treatment_organic_ar": "إزالة أشجار العرعر (السرو) القريبة.",
+      "treatment_summary_ar": "إبعاد العوائل البديلة والرش الوقائي في الربيع.",
+      "treatment_summary_en": "Remove nearby cedar hosts and apply preventative sprays.",
+      "confidence_keywords": ["bright orange", "cedar rust", "صدأ التفاح"]
+    },
+    {
+      "id": "APP_003",
+      "crop_type": "apple",
+      "disease_name_ar": "اللفحة النارية في التفاح",
+      "disease_name_en": "Fire Blight",
+      "scientific_name": "Erwinia amylovora",
+      "pathogen_type_ar": "بكتيريا",
+      "pathogen_type_en": "Bacteria",
+      "short_description_ar": "مرض بكتيري مدمر يجعل الأغصان والأزهار تبدو وكأنها احترقت بالنار، مع انحناء القمم النامية كأسعف الراعي.",
+      "short_description_en": "Destructive bacterial disease making shoots and blossoms look scorched by fire, with shepherd's crook bending.",
+      "core_visual_identity": {
+        "ar": "اسوداد وذبول مفاجئ للأغصان والأزهار كأنها محروقة، وانثناء القمة النامية (شكل عصا الراعي)",
+        "en": "Sudden blackening and wilting of shoots looking scorched, with shepherd's crook bending at tips"
+      },
+      "visual_features": {
+        "colors_ar": ["أسود متفحم", "بني داكن", "إفرازات عنبرية"],
+        "colors_en": ["scorched black", "dark brown", "amber ooze"],
+        "texture_ar": ["جاف متيبس", "قطرات لزجة (إفرازات)"],
+        "texture_en": ["dry brittle", "sticky droplets (ooze)"],
+        "shapes_ar": ["انحناء عصا الراعي في الفروع"],
+        "shapes_en": ["shepherd's crook bending"],
+        "locations_ar": ["الأزهار", "القمم النامية", "الفروع"],
+        "locations_en": ["blossoms", "shoot tips", "branches"],
+        "progression_ar": ["ذبول الأزهار", "اسوداد الفروع", "موت الشجرة"],
+        "progression_en": ["blossom wilt", "shoot blackening", "tree death"]
+      },
+      "common_vlm_phrases_ar": ["الشجرة كأنها محروقة", "الفرع مسود ومقلوب لتحت", "الأزهار نشفت واسودت"],
+      "common_vlm_phrases_en": ["looks like fire damage", "shepherd's crook", "blackened blossoms"],
+      "negative_match_indicators": {
+        "ar": ["بقع دائرية متفرقة على الورق", "مسحوق أبيض"],
+        "en": ["discrete leaf spots", "white powder"]
+      },
+      "environmental_triggers_ar": ["ربيع دافئ وممطر", "حشرات ناقلة"],
+      "environmental_triggers_en": ["warm wet spring", "insect vectors"],
+      "favorable_conditions_ar": "ينتشر بسرعة وقت التزهير في جو دافئ وممطر عن طريق النحل والمطر.",
+      "treatment_chemical_ar": "رش مركبات النحاس أو المضادات الحيوية الزراعية (ستربتوميسين) وقت التزهير.",
+      "treatment_organic_ar": "تقليم الأجزاء المصابة وحرقها فوراً (القطع أسفل الإصابة بـ 20 سم)، تعقيم المقصات.",
+      "treatment_summary_ar": "التقليم الجائر للأجزاء المحروقة وتعقيم الأدوات هو الحل الأهم لمنع انتشار البكتيريا.",
+      "treatment_summary_en": "Prune infected branches well below symptoms and sterilize tools.",
+      "confidence_keywords": ["scorched", "shepherd's crook", "محروقة", "عصا الراعي", "لفحة نارية"]
+    },
+    {
+      "id": "APP_004",
+      "crop_type": "apple",
+      "disease_name_ar": "البياض الدقيقي في التفاح",
+      "disease_name_en": "Apple Powdery Mildew",
+      "scientific_name": "Podosphaera leucotricha",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "طبقة بيضاء مسحوقية تغطي الأوراق والبراعم الحديثة، تسبب تجعد الأوراق وضعف النمو.",
+      "short_description_en": "White powdery coating on new leaves and shoots, causing leaf curling and stunted growth.",
+      "core_visual_identity": {
+        "ar": "مسحوق أبيض دقيقي يغطي النموات الحديثة والأوراق، مع تجعدها والتفافها",
+        "en": "White powdery flour-like coating covering new shoots and leaves, causing them to curl"
+      },
+      "visual_features": {
+        "colors_ar": ["أبيض", "رمادي فاتح"],
+        "colors_en": ["white", "light gray"],
+        "texture_ar": ["دقيقي", "بودري", "مسحوقي"],
+        "texture_en": ["powdery", "dusty", "flour-like"],
+        "shapes_ar": ["تغطية كاملة للقمم النامية", "تشوه وتجعد الأوراق"],
+        "shapes_en": ["complete coverage of shoot tips", "leaf curling"],
+        "locations_ar": ["النموات الحديثة", "الأوراق الغضة", "البراعم"],
+        "locations_en": ["new shoots", "young leaves", "buds"],
+        "progression_ar": ["بقع بيضاء صغيرة", "تغطية الفرع بالكامل", "تقزم الفرع"],
+        "progression_en": ["small white spots", "entire shoot covered", "stunted shoot"]
+      },
+      "common_vlm_phrases_ar": ["الورق الجديد عليه بودرة بيضا", "فرع التفاح مجعد وأبيض", "دقيق مرشوش على الورق"],
+      "common_vlm_phrases_en": ["white powder on leaves", "curled white leaves", "fuzzy white shoots"],
+      "negative_match_indicators": {
+        "ar": ["قشور سوداء", "عفن بني مائي"],
+        "en": ["black scabs", "brown watery rot"]
+      },
+      "environmental_triggers_ar": ["رطوبة عالية للرطوبة (بدون مطر)", "أيام دافئة وليالي باردة"],
+      "environmental_triggers_en": ["high humidity (no rain)", "warm days, cool nights"],
+      "favorable_conditions_ar": "ينمو في الجو الرطب المعتدل، ولا يحتاج إلى قطرات ماء حر (مطر) لكي ينتشر.",
+      "treatment_chemical_ar": "رش الكبريت الميكروني أو مبيدات الترايازول بانتظام.",
+      "treatment_organic_ar": "تقليم النموات البيضاء في الشتاء والربيع لتقليل مصدر العدوى.",
+      "treatment_summary_ar": "قص النموات المصابة مبكراً ورش الكبريت أو المبيدات الفطرية المتخصصة.",
+      "treatment_summary_en": "Prune infected white shoots and apply sulfur or specific fungicides.",
+      "confidence_keywords": ["white powder", "powdery mildew", "بودرة بيضا", "بياض دقيقي"]
+    }
+  ]
+}

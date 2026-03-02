@@ -1,0 +1,362 @@
+{
+    "crop_ar": "قمح",
+    "crop_en": "Wheat",
+    "crop_type": "wheat",
+    "diseases": [
+      {
+        "id": "WHE_001",
+        "crop_type": "wheat",
+        "disease_name_ar": "الصدأ الأصفر (الصدأ المخطط)",
+        "disease_name_en": "Yellow Rust (Stripe Rust)",
+        "scientific_name": "Puccinia striiformis f. sp. tritici",
+        "pathogen_type_ar": "فطر",
+        "pathogen_type_en": "Fungus",
+        "short_description_ar": "أخطر أمراض القمح، يظهر على شكل بثرات صفراء برتقالية تنتظم في خطوط متوازية مع عروق الورقة، ويسبب جفاف الأوراق وضعف المحصول.",
+        "short_description_en": "The most destructive wheat disease, appearing as yellow-orange pustules arranged in parallel stripes along leaf veins, causing severe desiccation and yield loss.",
+        "core_visual_identity": {
+          "ar": "بثرات صفراء إلى برتقالية فاقعة مرتبطة في خطوط مستقيمة متوازية على الورقة",
+          "en": "Bright yellow to orange pustules forming distinct parallel stripes on the leaf"
+        },
+        "visual_features": {
+          "colors_ar": ["أصفر ليموني", "برتقالي فاتح", "أصفر باهت (عند الجفاف)"],
+          "colors_en": ["lemon yellow", "light orange", "pale yellow (when dry)"],
+          "texture_ar": ["مسحوقي", "بودرة خفيفة تتمسح باليد", "بثرات بارزة قليلاً"],
+          "texture_en": ["powdery", "dusty spores wiping off easily", "slightly raised pustules"],
+          "shapes_ar": ["خطوط متوازية", "أشرطة طولية", "بثرات صغيرة متراصة"],
+          "shapes_en": ["parallel stripes", "longitudinal bands", "tightly packed tiny pustules"],
+          "locations_ar": ["الأوراق العليا أولاً", "الأغماد", "القنابع (أغلفة السنبلة) في الحالات الشديدة"],
+          "locations_en": ["upper leaves primarily", "leaf sheaths", "glumes in severe cases"],
+          "progression_ar": ["ظهور بقع فردية", "تكون الخطوط", "تحول البثرات للون الأسود (في نهاية الموسم)", "جفاف كامل للورقة"],
+          "progression_en": ["individual spots appear", "stripes form", "pustules turn black (teliospores at season end)", "complete leaf necrosis"]
+        },
+        "common_vlm_phrases_ar": [
+          "ورق القمح عليه خطوط صفرا",
+          "بودرة برتقالي بتطلع في إيدي",
+          "القمح مصفر ومخطط بالطول",
+          "شكل الصدا الأصفر على الورقة"
+        ],
+        "common_vlm_phrases_en": [
+          "yellow stripes on wheat leaves",
+          "orange powder rubbing off",
+          "striped rust pustules",
+          "yellow lines running down the leaf"
+        ],
+        "negative_match_indicators": {
+          "ar": ["بثرات مبعثرة غير منتظمة (صدأ بني)", "بثرات حمراء داكنة على الساق (صدأ أسود)"],
+          "en": ["scattered irregular pustules (Leaf Rust)", "dark red/brown pustules on stems (Stem Rust)"]
+        },
+        "environmental_triggers_ar": ["درجات حرارة منخفضة (10-15 مئوية)", "رطوبة عالية", "ندى صباحي كثيف", "رياح قوية"],
+        "environmental_triggers_en": ["cool temperatures (10-15°C)", "high humidity", "heavy morning dew", "strong winds"],
+        "favorable_conditions_ar": "ينتشر بسرعة وبائية في فترات الربيع الباردة والرطبة، وينتقل عبر الرياح لمسافات طويلة.",
+        "treatment_chemical_ar": "رش مبيدات فطرية جهازية (مثل التيبوكونازول أو الإيبوكسيكونازول) فور ظهور أولى العلامات.",
+        "treatment_organic_ar": "زراعة أصناف مقاومة مبكراً، التخلص من العوائل البديلة، والاعتماد على الدورة الزراعية.",
+        "treatment_summary_ar": "التدخل الفوري بالمبيدات الجهازية وزراعة أصناف معتمدة ومقاومة.",
+        "treatment_summary_en": "Immediate application of systemic triazole fungicides and use of resistant cultivars.",
+        "confidence_keywords": [
+          "yellow stripes",
+          "parallel lines",
+          "stripe rust",
+          "خطوط صفراء",
+          "صدأ أصفر",
+          "بثرات متوازية",
+          "بودرة ليمونية"
+        ]
+      },
+      {
+        "id": "WHE_002",
+        "crop_type": "wheat",
+        "disease_name_ar": "الصدأ الأسود (صدأ الساق)",
+        "disease_name_en": "Stem Rust (Black Rust)",
+        "scientific_name": "Puccinia graminis f. sp. tritici",
+        "pathogen_type_ar": "فطر",
+        "pathogen_type_en": "Fungus",
+        "short_description_ar": "مرض فتاك يهاجم سيقان وأوراق القمح، يظهر كبثرات بارزة ذات لون أحمر طوبي تتمزق لتكشف عن جراثيم الفطر، وتتحول للأسود لاحقاً.",
+        "short_description_en": "A devastating disease primarily attacking stems and leaves, characterized by raised, brick-red pustules that rupture the epidermis and later turn black.",
+        "core_visual_identity": {
+          "ar": "بثرات حمراء داكنة إلى بنية تمزق بشرة الساق (تبدو وكأنها جروح مفتوحة متناثرة)",
+          "en": "Dark red to brown pustules rupturing the stem epidermis (looking like scattered open wounds)"
+        },
+        "visual_features": {
+          "colors_ar": ["أحمر طوبي", "بني صدئ", "أسود داكن (في نهاية الموسم)"],
+          "colors_en": ["brick red", "rusty brown", "dark black (late season)"],
+          "texture_ar": ["خشن", "بارز", "ممزق للبشرة", "قشور متناثرة"],
+          "texture_en": ["rough", "raised", "ruptured epidermis", "scattered crusts"],
+          "shapes_ar": ["بثرات بيضاوية أو مستطيلة", "بقع مبعثرة غير منتظمة (ليست خطوط)"],
+          "shapes_en": ["oval or elongated pustules", "scattered irregular spots (not stripes)"],
+          "locations_ar": ["السيقان بشكل أساسي", "أغماد الأوراق", "السنابل أحياناً"],
+          "locations_en": ["stems primarily", "leaf sheaths", "spikes occasionally"],
+          "progression_ar": ["بثرات حمراء متناثرة", "اندماج البقع وتمزق الساق", "رقاد القمح (كسر الساق)", "تحول البثرات للون الأسود"],
+          "progression_en": ["scattered red pustules", "coalescing lesions tearing the stem", "lodging (stem breakage)", "pustules turn black"]
+        },
+        "common_vlm_phrases_ar": [
+          "صدا أحمر غامق على عود القمح",
+          "عيدان القمح مجروحة ومسودة",
+          "بودرة بني غامق على الساق",
+          "القمح رقد من الصدا الأسود"
+        ],
+        "common_vlm_phrases_en": [
+          "dark red rust on wheat stems",
+          "broken open stem lesions",
+          "black rust crusts on stalks",
+          "wheat stems lodging with brown powder"
+        ],
+        "negative_match_indicators": {
+          "ar": ["خطوط صفراء متوازية (صدأ أصفر)", "بثرات برتقالية صغيرة ومبعثرة على الأوراق فقط (صدأ بني)"],
+          "en": ["parallel yellow stripes (Yellow Rust)", "small orange scattered pustules only on leaves (Leaf Rust)"]
+        },
+        "environmental_triggers_ar": ["درجات حرارة دافئة (15-30 مئوية)", "رطوبة عالية", "أمطار متأخرة في الربيع"],
+        "environmental_triggers_en": ["warm temperatures (15-30°C)", "high humidity", "late spring rains"],
+        "favorable_conditions_ar": "ينشط في أواخر الموسم عندما ترتفع درجات الحرارة مع وجود رطوبة، مما يؤدي إلى تدمير المحصول قبل الحصاد.",
+        "treatment_chemical_ar": "الرش الوقائي والعلاجي بمبيدات الترايازول قبل انتشار الإصابة في الساق.",
+        "treatment_organic_ar": "زراعة أصناف مبكرة النضج للهروب من المرض، والقضاء على عائل الفطر (شجيرات البربري إن وجدت).",
+        "treatment_summary_ar": "مكافحة وقائية بأصناف مقاومة ورش مبيدات جهازية عند بداية الظهور الدافئ.",
+        "treatment_summary_en": "Preventative control with resistant varieties and timely systemic fungicide application.",
+        "confidence_keywords": [
+          "stem rust",
+          "brick red pustules",
+          "ruptured epidermis",
+          "صدأ الساق",
+          "بثرات حمراء داكنة",
+          "صدا أسود",
+          "تمزق الساق"
+        ]
+      },
+      {
+        "id": "WHE_003",
+        "crop_type": "wheat",
+        "disease_name_ar": "التفحم السائب",
+        "disease_name_en": "Loose Smut",
+        "scientific_name": "Ustilago tritici",
+        "pathogen_type_ar": "فطر (محمول داخل البذور)",
+        "pathogen_type_en": "Seed-borne Fungus",
+        "short_description_ar": "مرض جهازي يحول السنابل بالكامل إلى كتلة من المسحوق الأسود (جراثيم الفطر) بدلاً من الحبوب، وتتطاير الجراثيم لتترك محور السنبلة عارياً.",
+        "short_description_en": "A systemic disease that entirely replaces wheat heads with a mass of black powdery spores instead of grain, eventually blowing away to leave a bare rachis.",
+        "core_visual_identity": {
+          "ar": "سنبلة قمح سوداء بالكامل ومغطاة بمسحوق أسود يتطاير مع الرياح تاركاً العود عارياً",
+          "en": "Entire wheat head turned into black powder, blowing away to leave a bare stem (rachis)"
+        },
+        "visual_features": {
+          "colors_ar": ["أسود فاحم", "بني داكن محترق", "رمادي فاتح (محور السنبلة العاري)"],
+          "colors_en": ["sooty black", "dark burnt brown", "light gray (bare rachis)"],
+          "texture_ar": ["مسحوق ناعم جداً", "غبار أسود يتطاير باللمس", "سنبلة متفحمة"],
+          "texture_en": ["fine powder", "sooty dust that blows away", "smutted head"],
+          "shapes_ar": ["سنبلة مشوهة بدون حبوب", "عود رفيع عاري (بعد تطاير الجراثيم)"],
+          "shapes_en": ["deformed head without grains", "bare thin stalk (after spores blow away)"],
+          "locations_ar": ["السنابل فقط", "تظهر السنابل المصابة أبكر من السنابل السليمة بيومين"],
+          "locations_en": ["wheat heads only", "infected heads emerge 1-2 days earlier than healthy ones"],
+          "progression_ar": ["خروج سنبلة مغلفة بغشاء رقيق", "تمزق الغشاء وتكشف البودرة السوداء", "تطاير البودرة بالرياح", "بقاء المحور العاري"],
+          "progression_en": ["emergence of head enclosed in a membrane", "membrane ruptures revealing black powder", "spores blow away", "bare rachis remains"]
+        },
+        "common_vlm_phrases_ar": [
+          "السنبلة بقت بودرة سودا",
+          "تفحم في القمح",
+          "السنابل فاضية ولونها أسود",
+          "القمح محروق من فوق مفيش حبوب"
+        ],
+        "common_vlm_phrases_en": [
+          "wheat head turned to black powder",
+          "smutted wheat spike",
+          "black dusty head with no grains",
+          "bare stem where the head should be"
+        ],
+        "negative_match_indicators": {
+          "ar": ["بقع سوداء على الأوراق (المرض يصيب السنبلة فقط)", "عفن أبيض أو وردي على السنبلة (لفحة فيوزاريوم)"],
+          "en": ["black spots on leaves (affects only heads)", "white or pink mold on heads (Fusarium Head Blight)"]
+        },
+        "environmental_triggers_ar": ["رطوبة عالية أثناء طرد السنابل والتزهير (الموسم السابق)", "رياح خفيفة لنقل الجراثيم"],
+        "environmental_triggers_en": ["high humidity during heading and flowering (previous season)", "light winds for spore dispersal"],
+        "favorable_conditions_ar": "تحدث العدوى في الموسم السابق أثناء التزهير، ويسكن الفطر داخل الحبة السليمة ظاهرياً حتى تنمو في الموسم التالي.",
+        "treatment_chemical_ar": "لا يمكن علاجه بعد ظهوره في الحقل. العلاج الوحيد هو معاملة التقاوي بمبيدات فطرية جهازية قبل الزراعة.",
+        "treatment_organic_ar": "زراعة تقاوي معتمدة ونظيفة تماماً. استخدام المعاملة بالماء الساخن للتقاوي العضوية.",
+        "treatment_summary_ar": "الوقاية الصارمة عبر معالجة بذور التقاوي بالمطهرات الفطرية قبل زراعتها.",
+        "treatment_summary_en": "Strict prevention via systemic fungicidal seed treatment before planting.",
+        "confidence_keywords": [
+          "loose smut",
+          "black powder head",
+          "bare rachis",
+          "تفحم سائب",
+          "سنبلة سوداء",
+          "بودرة فحمية",
+          "محور عاري"
+        ]
+      },
+      {
+        "id": "WHE_004",
+        "crop_type": "wheat",
+        "disease_name_ar": "التبقع السبتوري (سبتوريا القمح)",
+        "disease_name_en": "Septoria Tritici Blotch",
+        "scientific_name": "Zymoseptoria tritici",
+        "pathogen_type_ar": "فطر",
+        "pathogen_type_en": "Fungus",
+        "short_description_ar": "مرض يصيب أوراق القمح، يبدأ كبقع صفراء غير منتظمة تتحول للبني، وتتميز بوجود نقاط سوداء صغيرة جداً (الأوعية البوغية) بداخلها.",
+        "short_description_en": "A leaf disease starting as irregular yellow blotches that turn brown, distinctively featuring tiny black dots (pycnidia) inside the dead tissue.",
+        "core_visual_identity": {
+          "ar": "بقع ميتة بنية اللون محاطة بهالة صفراء وتحتوي على نقاط سوداء دقيقة بداخلها",
+          "en": "Brown necrotic blotches surrounded by yellow halos, containing tiny black dots (pycnidia)"
+        },
+        "visual_features": {
+          "colors_ar": ["أخضر فاتح/أصفر (مبكراً)", "بني محمر", "نقاط سوداء دقيقة"],
+          "colors_en": ["pale green/yellow (early)", "reddish-brown", "tiny black dots"],
+          "texture_ar": ["نسيج ورقي جاف وميت", "نقاط خشنة دقيقة جداً في المركز"],
+          "texture_en": ["dry necrotic tissue", "microscopic rough dots in the center"],
+          "shapes_ar": ["بقع طولية غير منتظمة", "التحام البقع لتشمل الورقة كلها", "مقيدة بعروق الورقة أحياناً"],
+          "shapes_en": ["irregular elongated blotches", "coalescing lesions", "sometimes restricted by leaf veins"],
+          "locations_ar": ["الأوراق السفلية الملامسة للتربة أولاً", "يمتد للأوراق العليا مع الأمطار"],
+          "locations_en": ["lower leaves touching soil first", "progresses upward with rain splash"],
+          "progression_ar": ["بقع مائية صغيرة", "توسع طولي واصفرار", "موت الأنسجة وظهور النقاط السوداء", "جفاف وموت الورقة"],
+          "progression_en": ["small water-soaked spots", "longitudinal expansion and yellowing", "necrosis and black dots appearance", "leaf death"]
+        },
+        "common_vlm_phrases_ar": [
+          "بقع بني في الورق من تحت",
+          "ورق القمح بينشف وفيه نقط سودا",
+          "بقع غير منتظمة مالية الورقة",
+          "تبقع سبتوري في القمح"
+        ],
+        "common_vlm_phrases_en": [
+          "brown patches with black specks on wheat",
+          "lower wheat leaves drying up",
+          "irregular necrotic blotches",
+          "pycnidia on wheat leaves"
+        ],
+        "negative_match_indicators": {
+          "ar": ["بودرة بارزة تتمسح باليد (هذا صدأ وليس سبتوريا)", "بقع دائرية منتظمة جداً"],
+          "en": ["raised wipeable powder (this is Rust, not Septoria)", "perfectly circular uniform spots"]
+        },
+        "environmental_triggers_ar": ["أمطار متكررة", "رطوبة عالية", "درجات حرارة معتدلة (15-25 مئوية)"],
+        "environmental_triggers_en": ["frequent rainfall", "high humidity", "moderate temperatures (15-25°C)"],
+        "favorable_conditions_ar": "ينتشر بشدة في المواسم الممطرة، حيث تتناثر الجراثيم من التربة للأوراق السفلية بواسطة قطرات المطر.",
+        "treatment_chemical_ar": "الرش بمبيدات الترايازول أو الستروبيلورين لحماية الأوراق العلوية (ورقة العلم) قبل وصول الإصابة إليها.",
+        "treatment_organic_ar": "حرث بقايا المحصول السابق، دورة زراعية، وتقليل الكثافة النباتية لتحسين التهوية.",
+        "treatment_summary_ar": "حماية ورقة العلم (الورقة العليا) بالمبيدات الجهازية وتقليل الرطوبة بالزراعة المتباعدة.",
+        "treatment_summary_en": "Protect the flag leaf using systemic fungicides and employ crop rotation.",
+        "confidence_keywords": [
+          "septoria blotch",
+          "pycnidia",
+          "black dots in brown spots",
+          "تبقع سبتوري",
+          "نقاط سوداء",
+          "بقع بنية غير منتظمة"
+        ]
+      },
+      {
+        "id": "WHE_005",
+        "crop_type": "wheat",
+        "disease_name_ar": "لفحة السنبلة الفيوزاريومية (جرب القمح)",
+        "disease_name_en": "Fusarium Head Blight (Scab)",
+        "scientific_name": "Fusarium graminearum",
+        "pathogen_type_ar": "فطر",
+        "pathogen_type_en": "Fungus",
+        "short_description_ar": "مرض يصيب السنابل ويسبب ابيضاضاً أو جفافاً مبكراً لبعض أو كل السنيبلات، مع ظهور نمو فطري وردي أو برتقالي، ويفرز سموماً فطرية في الحبوب.",
+        "short_description_en": "A disease affecting wheat heads, causing premature bleaching of spikelets with visible pink or orange fungal growth, often contaminating grains with mycotoxins.",
+        "core_visual_identity": {
+          "ar": "تبييض (جفاف مبكر) لجزء من السنبلة أو كلها مع وجود عفن وردي/برتقالي عند قاعدة السنيبلات",
+          "en": "Premature bleaching of part or all of the wheat head, often with pink/orange mold at the base of spikelets"
+        },
+        "visual_features": {
+          "colors_ar": ["أبيض أو قشي باهت (للسنيبلات المصابة)", "أخضر (بقية السنبلة السليمة)", "وردي/برتقالي (النمو الفطري)", "بني على الساق أسفل السنبلة"],
+          "colors_en": ["white or pale straw (infected spikelets)", "green (healthy remainder)", "pink/orange (fungal growth)", "brown on peduncle"],
+          "texture_ar": ["جاف وفارغ من الداخل", "عفن قطني خفيف جداً"],
+          "texture_en": ["dry and shriveled grains", "light cottony mold"],
+          "shapes_ar": ["تبييض نصف السنبلة العلوي أو السفلي", "حبوب متكرمشة وصغيرة (حبوب طباشيرية)"],
+          "shapes_en": ["half-bleached heads", "shriveled and chalky tombstone kernels"],
+          "locations_ar": ["السنابل", "عنق السنبلة (Peduncle)"],
+          "locations_en": ["wheat heads (spikes)", "peduncle (stem just below head)"],
+          "progression_ar": ["إصابة الأزهار", "تبييض سريع للسنيبلات", "ظهور العفن الوردي في الجو الرطب", "انكماش الحبوب داخل السنبلة"],
+          "progression_en": ["flower infection", "rapid bleaching of spikelets", "pink mold emerges in high humidity", "grain shriveling"]
+        },
+        "common_vlm_phrases_ar": [
+          "السنبلة نصها أبيض ونصها أخضر",
+          "عفن بمبي أو برتقالي على القمح",
+          "حبوب القمح ضامرة ولونها أبيض كالح",
+          "جرب القمح أو لفحة السنابل"
+        ],
+        "common_vlm_phrases_en": [
+          "wheat head is half white half green",
+          "pink mold on wheat spike",
+          "shriveled white wheat grains",
+          "scab on wheat heads"
+        ],
+        "negative_match_indicators": {
+          "ar": ["سنبلة تتحول بالكامل لبودرة سوداء متطايرة (هذا تفحم سائب)", "جفاف الحقل بالكامل بشكل موحد (عطش أو ملوحة)"],
+          "en": ["head turning entirely to blowing black powder (Loose Smut)", "uniform whole-field drought stress"]
+        },
+        "environmental_triggers_ar": ["أمطار ورطوبة عالية جداً خلال فترة التزهير", "درجات حرارة دافئة", "بقايا محصول الذرة في الحقل"],
+        "environmental_triggers_en": ["rain and very high humidity during flowering (anthesis)", "warm temperatures", "corn residues in the field"],
+        "favorable_conditions_ar": "الخطر الأكبر يكون عند هطول الأمطار وبقاء السنابل مبتلة خلال مرحلة تزهير القمح.",
+        "treatment_chemical_ar": "الرش الوقائي بمبيدات فطرية (مثل التيبوكونازول) تحديداً خلال مرحلة التزهير.",
+        "treatment_organic_ar": "تجنب زراعة القمح بعد الذرة، حراثة بقايا المحاصيل، واستخدام أصناف أقل عرضة للإصابة.",
+        "treatment_summary_ar": "التوقيت الحاسم للرش هو مرحلة التزهير لتجنب تكون السموم الفطرية (المايكوتوكسين).",
+        "treatment_summary_en": "Preventative spraying at anthesis is critical to prevent yield loss and mycotoxin accumulation.",
+        "confidence_keywords": [
+          "fusarium head blight",
+          "pink mold",
+          "bleached spikelets",
+          "لفحة السنبلة",
+          "تبييض السنبلة",
+          "عفن وردي",
+          "جرب القمح"
+        ]
+      },
+      {
+        "id": "WHE_006",
+        "crop_type": "wheat",
+        "disease_name_ar": "حشرة السونة (بق القمح)",
+        "disease_name_en": "Sunn Pest (Wheat Bug)",
+        "scientific_name": "Eurygaster integriceps",
+        "pathogen_type_ar": "آفة حشرية",
+        "pathogen_type_en": "Insect Pest",
+        "short_description_ar": "حشرة ماصة مدمرة تهاجم السيقان والسنابل، تسبب جفاف السنابل (السنابل البيضاء) وتشوه الحبوب مما يفقد الدقيق خاصية الخبز.",
+        "short_description_en": "A destructive piercing-sucking bug that attacks stems and heads, causing white heads (deadhearts) and shriveled grains that ruin flour baking quality.",
+        "core_visual_identity": {
+          "ar": "حشرة بنية/رمادية تشبه الترس (الدرع) على السنابل، مع جفاف وتبييض كامل للسنبلة أو وجود حبوب متكرمشة بها ثقب ووخزة محاطة بهالة باهتة",
+          "en": "Shield-shaped brown/gray bug on heads, causing completely white dry heads or shriveled grains with a distinct puncture mark and pale halo"
+        },
+        "visual_features": {
+          "colors_ar": ["حشرة بنية رمادية", "سنابل بيضاء جافة", "بقعة صفراء باهتة على الحبة (مكان الوخز)"],
+          "colors_en": ["brown-gray insect", "white dry heads", "pale yellow spot on grain (puncture site)"],
+          "texture_ar": ["حبوب ضامرة ومكرمشة", "سنابل فارغة هشة"],
+          "texture_en": ["shriveled wrinkled grains", "empty brittle heads"],
+          "shapes_ar": ["حشرة بشكل درع عريض", "ثقب دقيق في الحبة"],
+          "shapes_en": ["broad shield-shaped insect", "pinhole puncture in grain"],
+          "locations_ar": ["الساق من أسفل السنبلة (وقت التغذية المبكرة)", "حبوب السنبلة (في الطور اللبني والعجيني)"],
+          "locations_en": ["stem below head (early feeding)", "wheat grains (milk and dough stages)"],
+          "progression_ar": ["امتصاص عصارة الساق", "جفاف السنبلة بالكامل (قبل الطرد)", "تغذية على الحبوب وتكوين بقع بيضاء عليها", "فساد جلوتين القمح"],
+          "progression_en": ["sap feeding on stem", "whole head turns white (deadheart)", "grain feeding causing white spots", "ruining wheat gluten"]
+        },
+        "common_vlm_phrases_ar": [
+          "حشرة السونة على السنبلة",
+          "سنابل قمح بيضا وناشفة من غير حبوب",
+          "حباية القمح مكرمشة ومخرومة",
+          "بق القمح في الحقل",
+          "حشرة شبه الترس"
+        ],
+        "common_vlm_phrases_en": [
+          "sunn pest on wheat",
+          "white dead wheat heads",
+          "shield bugs on wheat spikes",
+          "shriveled wheat grains with bite marks"
+        ],
+        "negative_match_indicators": {
+          "ar": ["تبييض نصف السنبلة مع عفن وردي (هذه لفحة فيوزاريوم)", "جفاف بسبب العطش (يؤثر على الحقل بالكامل وليس سنابل فردية)"],
+          "en": ["half-bleached head with pink mold (Fusarium)", "uniform whole-field drought stress"]
+        },
+        "environmental_triggers_ar": ["المناخ المعتدل والدافئ في الربيع", "هجرة الحشرة من مناطق التشتية في الجبال"],
+        "environmental_triggers_en": ["mild to warm spring weather", "insect migration from overwintering mountain sites"],
+        "favorable_conditions_ar": "تهاجر الحشرات البالغة من الجبال إلى حقول القمح في الربيع مع دفء الجو وتتغذى وتتكاثر بسرعة.",
+        "treatment_chemical_ar": "رش مبيدات حشرية (بيريثرويدات أو الفوسفور العضوي) فور وصول أعداد الحشرة للحد الاقتصادي الحرج.",
+        "treatment_organic_ar": "إطلاق الأعداء الحيوية (مثل طفيل الترايكوجراما)، والاعتماد على الحصاد المبكر.",
+        "treatment_summary_ar": "المراقبة المستمرة للحقل في الربيع والتدخل الكيميائي الحاسم قبل مرحلة الطور العجيني للقمح.",
+        "treatment_summary_en": "Monitor fields in spring and apply targeted insecticides before the grain dough stage.",
+        "confidence_keywords": [
+          "sunn pest",
+          "shield bug",
+          "white heads",
+          "shriveled grains",
+          "حشرة السونة",
+          "بق القمح",
+          "سنابل بيضاء",
+          "حبوب متكرمشة"
+        ]
+      }
+    ]
+  }

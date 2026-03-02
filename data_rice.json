@@ -1,0 +1,171 @@
+{
+  "crop_ar": "أرز",
+  "crop_en": "Rice",
+  "crop_type": "rice",
+  "diseases": [
+    {
+      "id": "RIC_001",
+      "crop_type": "rice",
+      "disease_name_ar": "لفحة الأرز",
+      "disease_name_en": "Rice Blast",
+      "scientific_name": "Magnaporthe oryzae",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "بقع مغزلية الشكل (شكل الماسة أو العين) ذات مركز رمادي وحواف بنية على الأوراق والسنابل.",
+      "short_description_en": "Spindle or diamond-shaped lesions with gray centers and brown margins on leaves and panicles.",
+      "core_visual_identity": {
+        "ar": "بقع مغزلية مدببة (شكل العين) مركزها أبيض/رمادي وحافتها بنية",
+        "en": "Diamond-shaped (eye-like) lesions with white/gray centers and brown edges"
+      },
+      "visual_features": {
+        "colors_ar": ["مركز رمادي مبيض", "حواف بنية محمرة"],
+        "colors_en": ["gray/white center", "reddish-brown edges"],
+        "texture_ar": ["جاف متيبس في المركز"],
+        "texture_en": ["dry necrotic center"],
+        "shapes_ar": ["مغزلي", "شكل الماسة", "شكل العين"],
+        "shapes_en": ["spindle", "diamond", "eye-shaped"],
+        "locations_ar": ["الأوراق", "عقد الساق", "عنق السنبلة"],
+        "locations_en": ["leaves", "stem nodes", "panicle neck"],
+        "progression_ar": ["بقع صغيرة بنية", "استطالة لشكل الماسة", "انكسار رقبة السنبلة"],
+        "progression_en": ["small brown spots", "elongate to diamond", "panicle neck breaks"]
+      },
+      "common_vlm_phrases_ar": ["بقع شبه العين على الورق", "شكل الماسة قلبها رمادي", "رقبة السنبلة مكسورة ومسودة"],
+      "common_vlm_phrases_en": ["diamond spots on rice", "eye-like lesions", "gray center spots with brown edges", "broken neck blast"],
+      "negative_match_indicators": {
+        "ar": ["بقع دائرية صغيرة جداً بحجم السمسم", "خطوط صفراء طويلة على الحواف"],
+        "en": ["small circular sesame-sized spots", "long yellow stripes on edges"]
+      },
+      "environmental_triggers_ar": ["ندى طويل الأمد", "إفراط في التسميد النيتروجيني", "رطوبة عالية"],
+      "environmental_triggers_en": ["prolonged dew", "excess nitrogen fertilization", "high humidity"],
+      "favorable_conditions_ar": "ينتشر بشدة مع زيادة التسميد الآزوتي والندى الثقيل ليلاً.",
+      "treatment_chemical_ar": "رش مبيدات جهازية متخصصة (مثل الترايسكلازول) بمجرد ظهور الإصابة.",
+      "treatment_organic_ar": "الاعتدال في التسميد الآزوتي والتخلص من قش الأرز القديم.",
+      "treatment_summary_ar": "ضبط التسميد النيتروجيني واستخدام مبيدات متخصصة فوراً لإنقاذ السنابل.",
+      "treatment_summary_en": "Regulate nitrogen and use systemic fungicides immediately upon spotting.",
+      "confidence_keywords": ["diamond shape", "neck blast", "بقع مغزلية", "شكل العين"]
+    },
+    {
+      "id": "RIC_002",
+      "crop_type": "rice",
+      "disease_name_ar": "التبقع البني في الأرز",
+      "disease_name_en": "Rice Brown Spot",
+      "scientific_name": "Bipolaris oryzae",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "يسبب بقعاً بنية دائرية إلى بيضاوية صغيرة تشبه بذور السمسم موزعة على الأوراق، ويرتبط بنقص التغذية.",
+      "short_description_en": "Causes small, circular to oval brown spots resembling sesame seeds on leaves, often linked to poor nutrition.",
+      "core_visual_identity": {
+        "ar": "بقع بنية داكنة بحجم حبة السمسم مع هالة صفراء خفيفة، بدون مركز رمادي واضح",
+        "en": "Sesame seed-sized dark brown spots with a slight yellow halo, lacking a distinct gray center"
+      },
+      "visual_features": {
+        "colors_ar": ["بني داكن", "هالة صفراء باهتة"],
+        "colors_en": ["dark brown", "pale yellow halo"],
+        "texture_ar": ["بقع سطحية متناثرة"],
+        "texture_en": ["scattered surface spots"],
+        "shapes_ar": ["دائري", "بيضاوي منتظم", "حجم السمسمة"],
+        "shapes_en": ["circular", "regular oval", "sesame seed size"],
+        "locations_ar": ["سطح الأوراق بالكامل", "الحبوب"],
+        "locations_en": ["whole leaf surface", "grains"],
+        "progression_ar": ["بقع صغيرة", "اصفرار الورقة من كثرة البقع", "جفاف الورقة"],
+        "progression_en": ["small spots", "leaf yellowing from dense spotting", "leaf drying"]
+      },
+      "common_vlm_phrases_ar": ["منقط بني صغير", "ورق الرز عليه بقع شبه السمسم", "الورقة كلها نقط بنية"],
+      "common_vlm_phrases_en": ["sesame seed spots", "dotted brown leaves", "small oval brown marks"],
+      "negative_match_indicators": {
+        "ar": ["بقع مسحوبة ومغزلية (هذه لفحة)"],
+        "en": ["elongated diamond spots (this is blast)"]
+      },
+      "environmental_triggers_ar": ["تربة فقيرة في العناصر", "إجهاد مائي", "نقص البوتاسيوم"],
+      "environmental_triggers_en": ["nutrient-poor soil", "water stress", "potassium deficiency"],
+      "favorable_conditions_ar": "يرتبط ارتباطاً وثيقاً بضعف التربة ونقص العناصر الغذائية (خاصة البوتاسيوم).",
+      "treatment_chemical_ar": "رش بروبيكونازول أو مبيدات فطرية مناسبة في الإصابات الشديدة.",
+      "treatment_organic_ar": "تحسين التسميد وإضافة البوتاسيوم وتصحيح مشاكل التربة.",
+      "treatment_summary_ar": "الأساس هو التسميد الجيد للتربة وتحسين صحة النبات العامة لمقاومة المرض.",
+      "treatment_summary_en": "Proper soil nutrition and balanced fertilization are the primary controls.",
+      "confidence_keywords": ["sesame seed", "oval brown spots", "حجم السمسم", "تبقع بني"]
+    },
+    {
+      "id": "RIC_003",
+      "crop_type": "rice",
+      "disease_name_ar": "اللفحة البكتيرية في الأرز",
+      "disease_name_en": "Bacterial Leaf Blight (BLB)",
+      "scientific_name": "Xanthomonas oryzae pv. oryzae",
+      "pathogen_type_ar": "بكتيريا",
+      "pathogen_type_en": "Bacteria",
+      "short_description_ar": "خطوط مائية مائلة للاصفرار تبدأ من حواف الأوراق وتمتد للأسفل مسببة جفاف الورقة وموتها.",
+      "short_description_en": "Water-soaked yellowish stripes starting from leaf tips/edges and moving downwards, causing leaf death.",
+      "core_visual_identity": {
+        "ar": "اصفرار وجفاف يمتد كخطوط مموجة على طول حواف الورقة من القمة للقاعدة",
+        "en": "Yellowing and drying extending as wavy stripes along the leaf margins from tip to base"
+      },
+      "visual_features": {
+        "colors_ar": ["أخضر مائي", "أصفر باهت", "أبيض رمادي (عند الجفاف)"],
+        "colors_en": ["water-soaked green", "pale yellow", "grayish-white (when dry)"],
+        "texture_ar": ["حواف مموجة", "قطرات حليبية لزجة في الصباح (إفرازات بكتيرية)"],
+        "texture_en": ["wavy margins", "milky sticky droplets in morning (bacterial ooze)"],
+        "shapes_ar": ["خطوط طولية على الحواف", "تآكل جانبي"],
+        "shapes_en": ["longitudinal stripes on margins", "lateral blighting"],
+        "locations_ar": ["حواف وقمم الأوراق"],
+        "locations_en": ["leaf tips and margins"],
+        "progression_ar": ["خطوط مائية", "اصفرار الحواف", "جفاف الورقة بالكامل وتلونها بالرمادي"],
+        "progression_en": ["water-soaked streaks", "margin yellowing", "complete leaf drying to gray"]
+      },
+      "common_vlm_phrases_ar": ["حرف الورقة ناشف وأصفر", "الورق مصفر بالطول من الجناب", "قطرات بيضا لزجة الصبح"],
+      "common_vlm_phrases_en": ["yellow edges on rice leaves", "stripes along the margin", "milky dew on leaf"],
+      "negative_match_indicators": {
+        "ar": ["بقع بنية في منتصف الورقة", "شكل مغزلي للعين"],
+        "en": ["brown spots in the middle of leaf", "spindle eye-shape"]
+      },
+      "environmental_triggers_ar": ["أمطار غزيرة ورياح قوية", "درجات حرارة عالية", "غمر بالماء العميق"],
+      "environmental_triggers_en": ["heavy rain and strong winds", "high temperatures", "deep water flooding"],
+      "favorable_conditions_ar": "تنتشر البكتيريا عن طريق الرياح والأمطار وتدخل من جروح الأوراق في الجو الحار الرطب.",
+      "treatment_chemical_ar": "رش مركبات النحاس الوقائية، ولكن الفعالية محدودة بعد انتشار البكتيريا.",
+      "treatment_organic_ar": "زراعة أصناف مقاومة، تجنب الإفراط في النيتروجين، وتصريف مياه الحقل لعدة أيام.",
+      "treatment_summary_ar": "زراعة الأصناف المقاومة وتصريف المياه الزائدة هما أفضل طرق المكافحة.",
+      "treatment_summary_en": "Resistant varieties and draining the field water are the most effective controls.",
+      "confidence_keywords": ["wavy yellow margins", "bacterial ooze", "اصفرار الحواف", "خطوط طولية", "لفحة بكتيرية"]
+    },
+    {
+      "id": "RIC_004",
+      "crop_type": "rice",
+      "disease_name_ar": "لفحة الغمد في الأرز",
+      "disease_name_en": "Rice Sheath Blight",
+      "scientific_name": "Rhizoctonia solani",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "بقع رمادية محاطة بحواف بنية تظهر على غمد الساق بالقرب من مستوى الماء، وتشبه نمط جلد الثعبان.",
+      "short_description_en": "Grayish spots with brown margins appearing on the leaf sheath near the waterline, resembling a snakeskin pattern.",
+      "core_visual_identity": {
+        "ar": "بقع بيضاوية أو غير منتظمة بلون رمادي مبيض وحواف بنية داكنة على الساق (شكل جلد التعبان)",
+        "en": "Oval or irregular grayish-white spots with dark brown margins on the stem (snakeskin appearance)"
+      },
+      "visual_features": {
+        "colors_ar": ["مركز رمادي أو أبيض باهت", "حواف بنية أو أرجوانية"],
+        "colors_en": ["gray/off-white center", "brown or purplish margins"],
+        "texture_ar": ["جاف متقرح", "خيوط فطرية بيضاء ترى بالعين أحياناً"],
+        "texture_en": ["dry necrotic", "white fungal mycelia sometimes visible"],
+        "shapes_ar": ["بيضاوية عريضة", "غير منتظمة ومندمجة", "شكل جلد الثعبان"],
+        "shapes_en": ["broad oval", "irregular coalescing", "snakeskin pattern"],
+        "locations_ar": ["غمد الورقة (الساق)", "بالقرب من مستوى سطح الماء", "تمتد للأعلى"],
+        "locations_en": ["leaf sheath (stem)", "near water level", "spreads upwards"],
+        "progression_ar": ["بقع مائية خضراء", "جفاف المركز للون الرمادي", "اندماج البقع وموت الساق"],
+        "progression_en": ["green water-soaked spots", "center dries to gray", "coalescing spots and stem death"]
+      },
+      "common_vlm_phrases_ar": ["بقع رمادي على عود الرز من تحت", "شكل جلد التعبان على الساق", "الرز مسود من عند الماية"],
+      "common_vlm_phrases_en": ["snakeskin spots on stem", "gray marks on rice sheath", "lesions near water level"],
+      "negative_match_indicators": {
+        "ar": ["بقع مغزلية على الأوراق العلوية (لفحة الأرز)"],
+        "en": ["spindle spots on upper leaves (rice blast)"]
+      },
+      "environmental_triggers_ar": ["كثافة نباتية عالية", "تسميد نيتروجيني مفرط", "رطوبة وحرارة عالية داخل الحقل"],
+      "environmental_triggers_en": ["high plant density", "excessive nitrogen", "high humidity and heat in canopy"],
+      "favorable_conditions_ar": "تزاحم النباتات والحرارة العالية مع مستوى ماء ثابت يخلق بيئة خصبة للفطر عند قاعدة النبات.",
+      "treatment_chemical_ar": "استخدام مبيدات فطرية متخصصة (مثل أزوكسي ستروبين أو هكساكونازول) موجهة لقاعدة النبات.",
+      "treatment_organic_ar": "تقليل الكثافة النباتية، تنظيم الري والنيتروجين، والتخلص من الحشائش.",
+      "treatment_summary_ar": "تحسين التهوية بين النباتات والرش الموجه لقاعدة الساق بالمبيدات المناسبة.",
+      "treatment_summary_en": "Improve canopy ventilation and apply targeted fungicides to the lower stem.",
+      "confidence_keywords": ["sheath", "snakeskin", "لفحة الغمد", "جلد الثعبان", "بقع على الساق"]
+    }
+  ]
+}

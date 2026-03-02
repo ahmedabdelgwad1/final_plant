@@ -1,0 +1,171 @@
+{
+  "crop_ar": "بطاطس",
+  "crop_en": "Potato",
+  "crop_type": "potato",
+  "diseases": [
+    {
+      "id": "POT_001",
+      "crop_type": "potato",
+      "disease_name_ar": "الندوة المبكرة في البطاطس",
+      "disease_name_en": "Potato Early Blight",
+      "scientific_name": "Alternaria solani",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "بقع بنية داكنة تحتوي على حلقات متداخلة تشبه لوحة الهدف في الأوراق السفلية.",
+      "short_description_en": "Brown spots with concentric rings resembling a target board, starting on older leaves.",
+      "core_visual_identity": {
+        "ar": "بقع بنية بها حلقات متداخلة محاطة بهالة صفراء",
+        "en": "Brown spots with concentric rings surrounded by a yellow halo"
+      },
+      "visual_features": {
+        "colors_ar": ["بني داكن", "أسود", "أصفر باهت للهالة"],
+        "colors_en": ["dark brown", "black", "pale yellow halo"],
+        "texture_ar": ["جاف", "هش"],
+        "texture_en": ["dry", "papery"],
+        "shapes_ar": ["بقع دائرية", "حلقات متداخلة"],
+        "shapes_en": ["circular spots", "concentric rings"],
+        "locations_ar": ["الأوراق السفلية"],
+        "locations_en": ["lower leaves"],
+        "progression_ar": ["يبدأ تحت", "يصعد للأعلى", "اصفرار الأوراق"],
+        "progression_en": ["starts low", "moves up", "leaf chlorosis"]
+      },
+      "common_vlm_phrases_ar": ["بقع بني مدورة جواها دواير", "شبه لوحة النيشان"],
+      "common_vlm_phrases_en": ["target like spots", "brown spots with rings inside"],
+      "negative_match_indicators": {
+        "ar": ["بقع مائية رطبة", "زغب أبيض"],
+        "en": ["wet water-soaked lesions", "white fuzzy growth"]
+      },
+      "environmental_triggers_ar": ["تناوب البلل والجفاف", "نقص النيتروجين"],
+      "environmental_triggers_en": ["alternating wet/dry", "nitrogen deficiency"],
+      "favorable_conditions_ar": "ينشط عند تعاقب الجفاف مع الندى في درجات حرارة دافئة.",
+      "treatment_chemical_ar": "رش كلوروثالونيل أو مانكوزيب.",
+      "treatment_organic_ar": "دورة زراعية، تسميد نيتروجيني جيد.",
+      "treatment_summary_ar": "تسميد جيد واستخدام مبيدات وقائية وعلاجية.",
+      "treatment_summary_en": "Maintain nutrition and apply protective fungicides.",
+      "confidence_keywords": ["concentric rings", "target spot", "حلقات متداخلة"]
+    },
+    {
+      "id": "POT_002",
+      "crop_type": "potato",
+      "disease_name_ar": "الندوة المتأخرة في البطاطس",
+      "disease_name_en": "Potato Late Blight",
+      "scientific_name": "Phytophthora infestans",
+      "pathogen_type_ar": "أووميسيت",
+      "pathogen_type_en": "Oomycete",
+      "short_description_ar": "مرض مدمر يسبب بقع مائية داكنة وعفن أبيض أسفل الورقة.",
+      "short_description_en": "Fast-spreading disease causing dark water-soaked spots and white mold under leaves.",
+      "core_visual_identity": {
+        "ar": "بقع مائية بنية سريعة الانتشار مع زغب أبيض أسفل الورقة",
+        "en": "Rapid water-soaked brown spots with light white fuzz on the underside"
+      },
+      "visual_features": {
+        "colors_ar": ["أخضر شاحب", "بني داكن", "أسود", "زغب أبيض"],
+        "colors_en": ["pale green", "dark brown", "black", "white fuzz"],
+        "texture_ar": ["مائي", "رطب"],
+        "texture_en": ["water-soaked", "wet"],
+        "shapes_ar": ["بقع غير منتظمة", "حواف ضبابية"],
+        "shapes_en": ["irregular spots", "blurry edges"],
+        "locations_ar": ["حواف الأوراق", "السيقان", "الدرنات"],
+        "locations_en": ["leaf margins", "stems", "tubers"],
+        "progression_ar": ["بقع مائية", "اسوداد وموت الورقة", "تعفن الحقل"],
+        "progression_en": ["water spots", "leaf death", "rapid field rot"]
+      },
+      "common_vlm_phrases_ar": ["بقع سودة مبلولة", "عفن أبيض تحت الورقة"],
+      "common_vlm_phrases_en": ["dark wet spots", "white mold underneath"],
+      "negative_match_indicators": {
+        "ar": ["حلقات جافة متداخلة"],
+        "en": ["dry concentric rings"]
+      },
+      "environmental_triggers_ar": ["جو بارد", "رطوبة عالية جداً"],
+      "environmental_triggers_en": ["cool weather", "very high humidity"],
+      "favorable_conditions_ar": "ينتشر في الطقس البارد الرطب المليء بالأمطار.",
+      "treatment_chemical_ar": "ميتالاكسيل أو سيموكسانيل فوراً.",
+      "treatment_organic_ar": "حرق النباتات المصابة، منع الري بالرش.",
+      "treatment_summary_ar": "التدخل الفوري بمبيدات متخصصة لإنقاذ المحصول.",
+      "treatment_summary_en": "Immediate fungicide application to prevent epidemic.",
+      "confidence_keywords": ["water soaked", "white fuzz", "بقع مائية"]
+    },
+    {
+      "id": "POT_003",
+      "crop_type": "potato",
+      "disease_name_ar": "العفن البني في البطاطس",
+      "disease_name_en": "Potato Brown Rot",
+      "scientific_name": "Ralstonia solanacearum",
+      "pathogen_type_ar": "بكتيريا",
+      "pathogen_type_en": "Bacteria",
+      "short_description_ar": "ذبول مفاجئ للنبات وتلون الحلقة الوعائية في الدرنة باللون البني مع إفرازات بكتيرية لزجة.",
+      "short_description_en": "Sudden wilting with brown vascular rings in tubers oozing sticky bacterial slime.",
+      "core_visual_identity": {
+        "ar": "ذبول أخضر للنبات، وعند قطع الدرنة تظهر حلقة بنية تفرز مادة بيضاء لزجة",
+        "en": "Green wilting, cut tubers show a brown ring oozing white sticky slime"
+      },
+      "visual_features": {
+        "colors_ar": ["بني داخل الدرنة", "أبيض لزج (إفرازات)"],
+        "colors_en": ["brown inside tuber", "white sticky (ooze)"],
+        "texture_ar": ["لزج", "مخاطي من الدرنة"],
+        "texture_en": ["sticky", "slimy from tuber"],
+        "shapes_ar": ["حلقة دائرية بنية داخل حبة البطاطس"],
+        "shapes_en": ["brown circular ring inside potato"],
+        "locations_ar": ["الأوعية الناقلة", "داخل الدرنات"],
+        "locations_en": ["vascular tissue", "inside tubers"],
+        "progression_ar": ["ذبول وقت الظهيرة", "ذبول دائم", "تعفن الدرنة"],
+        "progression_en": ["midday wilt", "permanent wilt", "tuber rot"]
+      },
+      "common_vlm_phrases_ar": ["البطاطس من جوه فيها حلقة بني", "سائل لزج طالع من البطاطس", "النبات دبلان وهو أخضر"],
+      "common_vlm_phrases_en": ["brown ring inside potato", "sticky ooze from potato", "green wilting plant"],
+      "negative_match_indicators": {
+        "ar": ["بقع على الأوراق من الخارج", "عفن أبيض خارجي"],
+        "en": ["leaf spots", "external white mold"]
+      },
+      "environmental_triggers_ar": ["حرارة عالية", "تربة رطبة جداً"],
+      "environmental_triggers_en": ["high temperatures", "waterlogged soil"],
+      "favorable_conditions_ar": "ينشط في التربة الغدقة المبللة مع ارتفاع درجات الحرارة.",
+      "treatment_chemical_ar": "لا يوجد علاج كيميائي فعال بعد الإصابة.",
+      "treatment_organic_ar": "إعدام المحصول، زراعة تقاوي معتمدة، تعقيم الأدوات.",
+      "treatment_summary_ar": "الوقاية هي الحل الوحيد باستخدام تقاوي نظيفة وعدم الزراعة في أرض موبوءة.",
+      "treatment_summary_en": "Prevention through certified seeds; no cure once infected.",
+      "confidence_keywords": ["brown ring inside", "bacterial ooze", "حلقة بنية", "إفرازات لزجة"]
+    },
+    {
+      "id": "POT_004",
+      "crop_type": "potato",
+      "disease_name_ar": "الجرب العادي في البطاطس",
+      "disease_name_en": "Potato Common Scab",
+      "scientific_name": "Streptomyces scabies",
+      "pathogen_type_ar": "بكتيريا خيطية",
+      "pathogen_type_en": "Actinobacteria",
+      "short_description_ar": "آفات خشنة متقشرة على قشرة حبة البطاطس تشوه شكلها وتقلل قيمتها التسويقية.",
+      "short_description_en": "Rough, scabby lesions on the potato skin that deform it and reduce market value.",
+      "core_visual_identity": {
+        "ar": "قروح خشنة فلينية بنية اللون على سطح حبة البطاطس (الدرنة)",
+        "en": "Rough, corky, brown scabs on the surface of the potato tuber"
+      },
+      "visual_features": {
+        "colors_ar": ["بني فليني", "أسمر داكن"],
+        "colors_en": ["corky brown", "dark tan"],
+        "texture_ar": ["خشن", "فليني", "متقشر"],
+        "texture_en": ["rough", "corky", "scabby"],
+        "shapes_ar": ["تقرحات دائرية أو غير منتظمة", "شقوق نجمية"],
+        "shapes_en": ["circular or irregular scabs", "star-like cracks"],
+        "locations_ar": ["قشرة الدرنة (البطاطس) فقط"],
+        "locations_en": ["tuber skin only"],
+        "progression_ar": ["بقع صغيرة", "اتساع وتعمق التقرحات"],
+        "progression_en": ["small spots", "widening and deepening scabs"]
+      },
+      "common_vlm_phrases_ar": ["البطاطس مجربة", "قشرة البطاطس خشنة ومشققة", "بقع فلينية على الحبة"],
+      "common_vlm_phrases_en": ["scabby potato", "rough potato skin", "corky spots on potato"],
+      "negative_match_indicators": {
+        "ar": ["تعفن طري أو رائحة كريهة", "أعراض على الأوراق"],
+        "en": ["soft rot or bad smell", "foliar symptoms"]
+      },
+      "environmental_triggers_ar": ["تربة قلوية (pH عالي)", "تربة جافة وقت تكوين الدرنات"],
+      "environmental_triggers_en": ["alkaline soil (high pH)", "dry soil during tuber initiation"],
+      "favorable_conditions_ar": "ينتشر في الأراضي الخفيفة والجافة ذات القلوية العالية.",
+      "treatment_chemical_ar": "معاملة التقاوي قبل الزراعة.",
+      "treatment_organic_ar": "خفض حموضة التربة، الري المنتظم فترة تكوين الدرنات.",
+      "treatment_summary_ar": "تنظيم الري لعدم جفاف التربة واستخدام تقاوي سليمة وخفض قلوية التربة.",
+      "treatment_summary_en": "Maintain soil moisture during tuberization and lower soil pH.",
+      "confidence_keywords": ["scabby skin", "corky spots", "جرب البطاطس", "قشرة خشنة"]
+    }
+  ]
+}

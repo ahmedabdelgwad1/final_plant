@@ -1,0 +1,199 @@
+{
+  "crop_ar": "طماطم",
+  "crop_en": "Tomato",
+  "crop_type": "tomato",
+  "diseases": [
+    {
+      "id": "TOM_001",
+      "crop_type": "tomato",
+      "disease_name_ar": "البياض الدقيقي في الطماطم",
+      "disease_name_en": "Tomato Powdery Mildew",
+      "scientific_name": "Oidium neolycopersici / Leveillula taurica",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "مرض فطري يظهر كطبقة بيضاء دقيقية على الأوراق، ثم يسبب اصفرارًا تدريجيًا وضعفًا عامًا في النبات.",
+      "short_description_en": "A fungal disease that appears as white powdery growth on leaves, followed by progressive yellowing and plant weakening.",
+      "core_visual_identity": {
+        "ar": "طبقة بودرية بيضاء واضحة على سطح الورقة مع اصفرار لاحق",
+        "en": "Distinct white powdery coating on leaves with later yellowing"
+      },
+      "visual_features": {
+        "colors_ar": ["أبيض", "أبيض رمادي", "أصفر باهت", "اصفرار بين العروق"],
+        "colors_en": ["white", "off-white", "pale yellow", "interveinal chlorosis"],
+        "texture_ar": ["دقيقي", "بودري", "مسحوق ناعم", "طبقة سطحية جافة", "قشرة مسحوقية قابلة للمسح"],
+        "texture_en": ["powdery", "dusty", "flour-like", "dry superficial coating", "wipeable powder layer"],
+        "shapes_ar": ["بقع دائرية صغيرة", "لطخات غير منتظمة", "انتشار طبقة متصلة", "بقع متداخلة"],
+        "shapes_en": ["small circular spots", "irregular patches", "coalescing powdery areas", "merging powder spots"],
+        "locations_ar": ["السطح العلوي للورقة", "السطح السفلي للورقة", "الأوراق السفلية ثم المتوسطة", "حواف الورقة"],
+        "locations_en": ["upper leaf surface", "lower leaf surface", "older then middle leaves", "leaf margins"],
+        "progression_ar": ["زيادة كثافة الطبقة البيضاء", "اصفرار حواف الورقة", "جفاف والتفاف الورقة", "تساقط مبكر للأوراق", "تقزم النمو الخضري"],
+        "progression_en": ["increasing powder density", "marginal chlorosis", "leaf curling and drying", "premature defoliation", "stunted canopy growth"]
+      },
+      "common_vlm_phrases_ar": [
+        "فيه بودرة بيضا على الورق",
+        "الورقة شكلها مرشوشة دقيق",
+        "بقع بيضا ناشفة على السطح",
+        "الورق بيصفر بعد الطبقة البيضا",
+        "طبقة بيضا سهلة تتمسح بإيدي",
+        "السطح عليه غبار أبيض"
+      ],
+      "common_vlm_phrases_en": [
+        "white powder on leaves",
+        "flour-like coating",
+        "dusty white fungal layer",
+        "powdery spots spreading on tomato leaf",
+        "white dusty film on leaf surface",
+        "powder layer with yellowing margins"
+      ],
+      "negative_match_indicators": {
+        "ar": ["بقع مائية داكنة", "زغب أخضر زيتوني كثيف أسفل الورقة", "تعفن رطب على الثمار"],
+        "en": ["water-soaked dark lesions", "olive velvety mold underside", "wet fruit rot"]
+      },
+      "environmental_triggers_ar": ["حرارة معتدلة", "رطوبة مرتفعة", "تزاحم نباتي", "ضعف التهوية"],
+      "environmental_triggers_en": ["moderate temperature", "high humidity", "dense canopy", "poor ventilation"],
+      "favorable_conditions_ar": "ينشط في الجو المعتدل مع الرطوبة المرتفعة والتهوية الضعيفة داخل الصوب أو الزراعات الكثيفة.",
+      "treatment_chemical_ar": "رش الكبريت الميكروني أو مبيدات فطرية من مجموعة الترايازول بالتبادل وفق التوصيات.",
+      "treatment_organic_ar": "تحسين التهوية، إزالة الأوراق شديدة الإصابة، والرش بزيت النيم أو بيكربونات البوتاسيوم.",
+      "treatment_summary_ar": "استخدام الكبريت أو الترايازول مع تحسين التهوية وتقليل الرطوبة حول الأوراق.",
+      "treatment_summary_en": "Apply sulfur or triazoles and improve canopy ventilation while reducing humidity.",
+      "confidence_keywords": [
+        "white powder",
+        "powdery coating",
+        "flour-like fungus",
+        "بودرة بيضا",
+        "طبقة دقيقية",
+        "مسحوق أبيض",
+        "غبار أبيض على الورقة",
+        "اصفرار بعد بودرة بيضاء"
+      ]
+    },
+    {
+      "id": "TOM_002",
+      "crop_type": "tomato",
+      "disease_name_ar": "الندوة المتأخرة في الطماطم",
+      "disease_name_en": "Tomato Late Blight",
+      "scientific_name": "Phytophthora infestans",
+      "pathogen_type_ar": "أووميسيت (شبيه بالفطر)",
+      "pathogen_type_en": "Oomycete",
+      "short_description_ar": "مرض شديد الخطورة يسبب بقعًا مائية داكنة سريعة الانتشار على الأوراق والسيقان وقد يصل إلى تعفن صلب في الثمار.",
+      "short_description_en": "A highly destructive disease causing rapidly expanding dark water-soaked lesions on leaves and stems, often with fruit rot.",
+      "core_visual_identity": {
+        "ar": "بقع مائية بنية داكنة إلى سوداء بحواف غير منتظمة وتطور سريع",
+        "en": "Rapidly expanding dark water-soaked lesions with irregular margins"
+      },
+      "visual_features": {
+        "colors_ar": ["بني داكن", "أسود", "أخضر باهت حول البقعة", "رمادي أبيض أسفل الورقة", "بقع زيتونية داكنة"],
+        "colors_en": ["dark brown", "black", "pale green halo", "gray-white underside growth", "dark olive lesions"],
+        "texture_ar": ["مائي", "رطب", "منطقة متحللة", "تعفن صلب في الثمار", "نسيج مشبع بالماء"],
+        "texture_en": ["water-soaked", "wet", "necrotic tissue", "firm brown fruit rot", "water-logged tissue"],
+        "shapes_ar": ["بقع غير منتظمة", "لطخات كبيرة متصلة", "امتداد على الحواف", "حواف ضبابية غير واضحة"],
+        "shapes_en": ["irregular lesions", "large coalescing blotches", "edge-origin lesions", "diffuse lesion margins"],
+        "locations_ar": ["حواف الأوراق", "نصل الورقة", "السيقان", "أعناق الأوراق", "الثمار الخضراء", "طرف الورقة"],
+        "locations_en": ["leaf margins", "leaf blade", "stems", "petioles", "green fruits", "leaf tips"],
+        "progression_ar": ["انتشار سريع خلال أيام", "اسوداد الأنسجة", "ذبول المجموع الخضري", "تعفن الثمار", "موت القمم النامية"],
+        "progression_en": ["rapid spread in days", "tissue blackening", "canopy collapse", "fruit rot", "shoot tip blight"]
+      },
+      "common_vlm_phrases_ar": [
+        "بقع سودة مبلولة",
+        "بقع بنية غامقة بتكبر بسرعة",
+        "تعفن بني في الطماطم",
+        "حواف الورق مسودة ومبلولة",
+        "بقع سودا بتاكل الورقة بسرعة",
+        "فيه عفن بني على الثمرة"
+      ],
+      "common_vlm_phrases_en": [
+        "dark wet spots",
+        "water-soaked black lesions",
+        "rapid brown blight on tomato",
+        "hard brown rot on fruit",
+        "rapid leaf blight with wet lesions",
+        "dark lesions expanding from leaf edge"
+      ],
+      "negative_match_indicators": {
+        "ar": ["بودرة بيضا جافة", "عفن مخملي أخضر زيتوني فقط أسفل الورقة بدون بقع مائية"],
+        "en": ["dry white powder only", "olive velvety underside mold without wet lesions"]
+      },
+      "environmental_triggers_ar": ["جو بارد إلى معتدل", "أمطار متكررة", "ندى كثيف", "رطوبة مرتفعة جدًا"],
+      "environmental_triggers_en": ["cool to mild weather", "frequent rain", "heavy dew", "very high humidity"],
+      "favorable_conditions_ar": "يزداد ظهوره في الطقس الرطب مع الأمطار أو الندى واستمرار بلل الأوراق لفترات طويلة.",
+      "treatment_chemical_ar": "استخدام مبيدات وقائية/علاجية مثل المركبات النحاسية أو مانكوزيب وفق برنامج رش منتظم.",
+      "treatment_organic_ar": "إزالة الأجزاء المصابة سريعًا، منع الري بالرش العلوي، وتحسين صرف الحقل وتقليل بلل الأوراق.",
+      "treatment_summary_ar": "التدخل المبكر بمبيدات مناسبة مع التخلص من الأجزاء المصابة وتقليل الرطوبة الحرة على النبات.",
+      "treatment_summary_en": "Early fungicide intervention plus sanitation and strict moisture management are critical.",
+      "confidence_keywords": [
+        "water soaked lesions",
+        "dark blight",
+        "black wet spots",
+        "بقع مائية",
+        "بقع سودة مبلولة",
+        "تعفن بني سريع",
+        "اسوداد سريع للأوراق",
+        "بقع مبلولة داكنة"
+      ]
+    },
+    {
+      "id": "TOM_003",
+      "crop_type": "tomato",
+      "disease_name_ar": "عفن أوراق الطماطم",
+      "disease_name_en": "Tomato Leaf Mold",
+      "scientific_name": "Passalora fulva",
+      "pathogen_type_ar": "فطر",
+      "pathogen_type_en": "Fungus",
+      "short_description_ar": "مرض فطري يتميز ببقع صفراء على السطح العلوي للأوراق يقابلها نمو مخملي أخضر زيتوني على السطح السفلي.",
+      "short_description_en": "A fungal disease characterized by yellow upper-leaf spots with olive-green velvety growth on the lower side.",
+      "core_visual_identity": {
+        "ar": "اصفرار أعلى الورقة مع زغب/عفن مخملي زيتوني أسفلها",
+        "en": "Upper-leaf yellowing with olive velvety mold on underside"
+      },
+      "visual_features": {
+        "colors_ar": ["أصفر", "أخضر زيتوني", "بني زيتوني", "رمادي مخضر", "كلوروز متدرج"],
+        "colors_en": ["yellow", "olive green", "olive-brown", "gray-green", "progressive chlorosis"],
+        "texture_ar": ["مخملي", "زغبي", "فطري ناعم أسفل الورقة", "طبقة فطرية ناعمة الملمس"],
+        "texture_en": ["velvety", "fuzzy", "downy fungal growth underside", "soft velvety fungal layer"],
+        "shapes_ar": ["بقع صفراء غير منتظمة", "مناطق كلوروتية واسعة", "بقع متصلة مع تقدم المرض", "بقع زاوية بين العروق"],
+        "shapes_en": ["irregular yellow patches", "chlorotic areas", "coalescing lesions", "angular interveinal patches"],
+        "locations_ar": ["الأوراق السفلية أولًا", "السطح السفلي للورقة", "داخل البيوت المحمية", "منتصف الورقة حول العروق"],
+        "locations_en": ["lower leaves first", "underside of leaves", "greenhouse canopy", "interveinal zones"],
+        "progression_ar": ["تحول الزغب للأغمق", "جفاف الأنسجة", "ذبول وسقوط الأوراق السفلية", "انتقال الإصابة للأوراق الأعلى"],
+        "progression_en": ["mold darkening", "tissue drying", "lower-leaf drop", "upward canopy spread"]
+      },
+      "common_vlm_phrases_ar": [
+        "عفن أخضر تحت الورقة",
+        "بقع صفرا فوق الورقة",
+        "فطر مخملي من تحت",
+        "لون زيتوني زغبي",
+        "السطح فوق أصفر وتحته عفن مخملي",
+        "العفن غالبا تحت الورقة مش فوق"
+      ],
+      "common_vlm_phrases_en": [
+        "green mold under leaf",
+        "yellow spots upper surface",
+        "velvety fungus underside",
+        "olive fuzzy growth",
+        "yellow upper spots with underside mold",
+        "velvet-like olive underside fungus"
+      ],
+      "negative_match_indicators": {
+        "ar": ["بودرة بيضا واضحة على السطحين", "بقع مائية سوداء سريعة الانتشار"],
+        "en": ["clear white powder on both surfaces", "rapid dark water-soaked lesions"]
+      },
+      "environmental_triggers_ar": ["رطوبة عالية جدًا", "الصوب الزراعية", "تهوية محدودة", "تزاحم الأوراق"],
+      "environmental_triggers_en": ["very high humidity", "greenhouse production", "limited airflow", "dense foliage"],
+      "favorable_conditions_ar": "يزدهر في البيئات المغلقة الرطبة مثل الصوب مع ضعف حركة الهواء واستمرار الرطوبة على الأوراق.",
+      "treatment_chemical_ar": "رش مبيدات مناسبة مثل المركبات النحاسية أو كلوروثالونيل بالتبادل حسب الإرشادات.",
+      "treatment_organic_ar": "خفض الرطوبة داخل الصوبة، إزالة الأوراق المصابة، وزيادة التهوية والمسافات بين النباتات.",
+      "treatment_summary_ar": "تقليل الرطوبة ورفع كفاءة التهوية مع برنامج مكافحة فطرية مناسب.",
+      "treatment_summary_en": "Lower humidity and improve airflow, supported by an appropriate fungicide program.",
+      "confidence_keywords": [
+        "olive green mold",
+        "velvety underside",
+        "yellow upper spots",
+        "عفن زيتوني",
+        "مخملي أسفل الورقة",
+        "بقع صفرا فوق",
+        "عفن مخملي زيتوني تحت الورقة",
+        "اصفرار علوي مع نمو سفلي"
+      ]
+    }
+  ]
+}
