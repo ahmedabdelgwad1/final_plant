@@ -1,6 +1,6 @@
 # 🌿 Plant Disease API — React Integration Guide
 
-> هذا الملف مخصص لمطوّر الـ React لربط الفرونت إند مع الباك إند.
+> This file is for the React developer to integrate the frontend with the backend API.
 
 ---
 
@@ -9,29 +9,29 @@
 | Item             | Value                          |
 | ---------------- | ------------------------------ |
 | **Framework**    | FastAPI 0.115.6                |
-| **Python**       | 3.11.10                       |
+| **Python**       | 3.11.10                        |
 | **Base URL**     | `http://localhost:8000`        |
-| **Content-Type** | `multipart/form-data` (POST)  |
+| **Content-Type** | `multipart/form-data` (POST)   |
 
 ---
 
 ## 🚀 Running the Backend
 
 ```bash
-# 1. تأكّد إن Python 3.11 مثبّت عندك
+# 1. Make sure Python 3.11 is installed
 python3.11 --version
 
-# 2. ثبّت المكتبات
+# 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. أنشئ قاعدة البيانات (مرة واحدة بس)
+# 3. Build the knowledge base (run once)
 python infrastructure/create_db.py
 
-# 4. شغّل السيرفر
+# 4. Start the server
 uvicorn api:app --reload --port 8000
 ```
 
-السيرفر هيشتغل على `http://localhost:8000`
+The server will be available at `http://localhost:8000`
 
 ---
 
@@ -71,7 +71,7 @@ GET /api/crops
 }
 ```
 
-> استخدم الـ `slug` في `crop_type` عند إرسال صورة.
+> Use the `slug` value as the `crop_type` when sending an image.
 
 ---
 
@@ -84,13 +84,13 @@ Content-Type: multipart/form-data
 
 **Form Fields:**
 
-| Field          | Type   | Required | Default | Description                              |
-| -------------- | ------ | -------- | ------- | ---------------------------------------- |
-| `message`      | string | ❌       | `""`    | رسالة المستخدم النصية                    |
-| `image`        | file   | ❌       | `null`  | صورة النبات (jpg, png, webp)             |
-| `crop_type`    | string | ❌       | `""`    | نوع المحصول (slug) — مطلوب مع الصورة     |
-| `lang`         | string | ❌       | `"ar"`  | لغة الرد: `"ar"` أو `"en"`              |
-| `chat_history` | string | ❌       | `"[]"`  | JSON string لمصفوفة الرسائل السابقة      |
+| Field          | Type   | Required | Default | Description                                       |
+| -------------- | ------ | -------- | ------- | ------------------------------------------------- |
+| `message`      | string | ❌       | `""`    | User's text message                               |
+| `image`        | file   | ❌       | `null`  | Plant image (jpg, png, webp)                      |
+| `crop_type`    | string | ❌       | `""`    | Crop slug — required when sending an image        |
+| `lang`         | string | ❌       | `"ar"`  | Response language: `"ar"` or `"en"`               |
+| `chat_history` | string | ❌       | `"[]"`  | JSON string of previous messages array            |
 
 **Response (always):**
 
@@ -106,8 +106,8 @@ Content-Type: multipart/form-data
 
 ```js
 const formData = new FormData();
-formData.append("message", "ما هو أخطر مرض في الطماطم؟");
-formData.append("lang", "ar");
+formData.append("message", "What is the most dangerous tomato disease?");
+formData.append("lang", "en");
 formData.append("chat_history", JSON.stringify(chatHistory));
 
 const res = await fetch("http://localhost:8000/api/chat", {
@@ -124,7 +124,7 @@ console.log(data.reply);
 const formData = new FormData();
 formData.append("image", fileInput.files[0]);
 formData.append("crop_type", "tomato");
-formData.append("lang", "ar");
+formData.append("lang", "en");
 formData.append("message", ""); // optional text with image
 
 const res = await fetch("http://localhost:8000/api/chat", {
@@ -133,9 +133,9 @@ const res = await fetch("http://localhost:8000/api/chat", {
 });
 const data = await res.json();
 console.log(data.reply);
-// → 🌱 **المرض:** ...
-// → 🔬 **السبب:** ...
-// → 💊 **العلاج:** ...
+// → 🌱 **Disease:** Late Blight
+// → 🔬 **Cause:** Phytophthora infestans — ...
+// → 💊 **Treatment:** ...
 ```
 
 ### Scenario 3: Image Without Crop
@@ -151,36 +151,36 @@ const res = await fetch("http://localhost:8000/api/chat", {
 });
 const data = await res.json();
 console.log(data.reply);
-// → "من فضلك اختر نوع النبات الأول."
+// → "Please select the crop type first."
 ```
 
-> الـ API هيرد يطلب نوع المحصول — اعرض dropdown للمستخدم من `/api/crops`.
+> The API will ask the user to select a crop — show a dropdown populated from `/api/crops`.
 
 ---
 
 ## 💬 Chat History Format
 
-أرسل الـ `chat_history` كـ JSON string لمصفوفة من الرسائل:
+Send `chat_history` as a JSON string containing an array of messages:
 
 ```js
 const chatHistory = [
-  { role: "user", content: "ما هو مرض اللفحة المتأخرة؟" },
-  { role: "assistant", content: "اللفحة المتأخرة هي ..." },
-  { role: "user", content: "وإيه العلاج؟" },
+  { role: "user", content: "What is late blight?" },
+  { role: "assistant", content: "Late blight is a disease caused by..." },
+  { role: "user", content: "How do I treat it?" },
 ];
 
 formData.append("chat_history", JSON.stringify(chatHistory));
 ```
 
-- `role`: `"user"` أو `"assistant"`
-- `content`: نص الرسالة
-- الباك إند بيستخدم آخر 6 رسائل بس عشان الـ context
+- `role`: `"user"` or `"assistant"`
+- `content`: The message text
+- The backend only uses the **last 6 messages** for context
 
 ---
 
 ## 🌐 CORS
 
-الـ CORS مفتوح لكل الـ origins (`*`) — يعني تقدر تشغّل React على أي بورت:
+CORS is open for all origins (`*`), so you can run React on any port:
 
 ```
 http://localhost:3000  ✅
@@ -192,11 +192,11 @@ http://127.0.0.1:3000  ✅
 
 ## ⚠️ Error Handling
 
-| Status | Meaning                                       |
-| ------ | --------------------------------------------- |
-| `200`  | Success — الرد في `reply`                     |
-| `400`  | لم يتم إرسال رسالة أو صورة                    |
-| `503`  | قاعدة البيانات لم تُبنى بعد (شغّل create_db) |
+| Status | Meaning                                            |
+| ------ | -------------------------------------------------- |
+| `200`  | Success — response is in `reply`                   |
+| `400`  | No message or image was sent                       |
+| `503`  | Knowledge base not built yet (run `create_db.py`)  |
 
 ```js
 try {
@@ -222,31 +222,31 @@ try {
 
 ```
 1. App loads → GET /api/crops → populate crop dropdown
-2. User types message → POST /api/chat (text only)
-3. User uploads image → show crop dropdown
+2. User types a message → POST /api/chat (text only)
+3. User uploads an image → show crop dropdown
 4. User selects crop + sends → POST /api/chat (image + crop)
 5. Display reply (supports Markdown — use react-markdown)
-6. Keep chat_history array, send it with each request
+6. Keep chat_history array in state, send it with each request
 ```
 
 ---
 
 ## 📝 Notes
 
-- الرد بيكون **Markdown** — استخدم `react-markdown` لعرضه.
-- الصور المدعومة: **JPG, PNG, WebP**.
-- `lang` ممكن `"ar"` (عربي) أو `"en"` (إنجليزي) — بيتحكم في لغة الرد بالكامل.
-- لو الصورة فيها مشكلة، الرد هيحتوي على `⚠️` warning.
-- ملف `.env` لازم يكون موجود في الباك إند ويحتوي على الأقل على `GROQ_API_KEY`.
+- The response is **Markdown** formatted — use `react-markdown` to render it.
+- Supported image formats: **JPG, PNG, WebP**.
+- `lang` accepts `"ar"` (Arabic) or `"en"` (English) — controls the entire response language.
+- If there's an issue with the image, the response will include a `⚠️` warning.
+- A `.env` file must exist in the backend root with at least `GROQ_API_KEY`.
 
 ---
 
 ## 🔑 Environment Variables (Backend)
 
-| Variable            | Required | Description                  |
-| ------------------- | -------- | ---------------------------- |
-| `GROQ_API_KEY`      | ✅       | مفتاح Groq API              |
-| `PLANTNET_API_KEY`  | ❌       | للتحقق من التشخيص (اختياري) |
-| `TAVILY_API_KEY`    | ❌       | بحث ويب إضافي (اختياري)     |
+| Variable            | Required | Description                              |
+| ------------------- | -------- | ---------------------------------------- |
+| `GROQ_API_KEY`      | ✅       | Groq API key (required)                  |
+| `PLANTNET_API_KEY`  | ❌       | PlantNet verification (optional)         |
+| `TAVILY_API_KEY`    | ❌       | Additional web search (optional)         |
 
-> الـ Backend هو مسئوليتي — إنت مش محتاج تعدّل فيه. بس شغّله واستخدم الـ API.
+> The backend is my responsibility — you don't need to modify it. Just run it and use the API.
