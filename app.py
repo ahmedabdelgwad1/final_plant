@@ -44,7 +44,7 @@ def _add_msg(role: str, content: str, **extra):
     st.session_state["messages"].append({"role": role, "content": content, **extra})
 
 
-def _run_analysis(crop_slug: str, image_path: str | None, query: str):
+def _run_analysis(crop_slug: str, image_path: str | None, query: str, lang: str = "ar"):
     retrieval_mode = os.getenv("RETRIEVAL_MODE", "mmr").lower()
     retrieval_k = to_int(os.getenv("RETRIEVAL_K", 4), 4)
     initial_state = {
@@ -54,6 +54,7 @@ def _run_analysis(crop_slug: str, image_path: str | None, query: str):
         "retrieval_k": retrieval_k,
         "query": query or None,
         "image_path": image_path,
+        "ui_lang": lang,
     }
     return Workflow().run(initial_state)
 
@@ -229,7 +230,7 @@ if uploaded_image and uploaded_image != st.session_state.get("pending_image"):
             image_path = tmp.name
 
         with st.spinner(t("analyzing")):
-            result = _run_analysis(crop_slug, image_path, None)
+            result = _run_analysis(crop_slug, image_path, None, lang=lang)
 
         st.session_state["last_result"] = result
         response_text = result.get("response", t("empty_result"))
@@ -253,6 +254,7 @@ if prompt := st.chat_input(t("chat_placeholder")):
                 prompt,
                 crop_type=crop_slug if crop_selected else None,
                 chat_history=st.session_state["messages"],
+                lang=lang,
             )
         text = reply.get("text") if isinstance(reply, dict) else str(reply)
         text += f"\n\n---\n{t('followup_prompt')}"

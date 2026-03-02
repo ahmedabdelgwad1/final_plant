@@ -10,6 +10,7 @@ class State(TypedDict, total=False):
     retrieval_k: Optional[int]
     query: Optional[str]
     image_path: Optional[str]
+    ui_lang: Optional[str]
     vision_description: str
     vision_error: Optional[str]
     context: Optional[list]

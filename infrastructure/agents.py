@@ -10,7 +10,7 @@ from langchain_core.messages import HumanMessage
 from PIL import Image
 from domain.models import State
 from dotenv import load_dotenv
-from infrastructure.prompts import VISION_PROMPT, final_prompt_extend
+from infrastructure.prompts import VISION_PROMPT
 from config import CHROMA_DB_DIR
 from shared.utils import to_int, to_float
 
@@ -134,26 +134,6 @@ def _format_retrieved_context(context_docs):
             )
         )
     return "\n".join(rows)
-
-
-def _allowed_diseases_from_context(context_docs):
-    allowed = []
-    for doc in context_docs or []:
-        metadata = getattr(doc, "metadata", {}) or {}
-        ar_name = (metadata.get("disease_name_ar") or "").strip()
-        en_name = (metadata.get("disease_name_en") or "").strip()
-        if ar_name or en_name:
-            allowed.append({"ar": ar_name, "en": en_name})
-    return allowed
-
-
-def _format_allowed_diseases(allowed):
-    if not allowed:
-        return "No allowed diseases."
-    lines = []
-    for i, item in enumerate(allowed, start=1):
-        lines.append(f"{i}) {item.get('ar', '')} | {item.get('en', '')}")
-    return "\n".join(lines)
 
 
 def _extract_suspected_disease(context_docs):
@@ -465,30 +445,60 @@ def _find_doc_for_disease(context_docs, disease_ar: str, disease_en: str):
     return context_docs[0] if context_docs else None
 
 
-def _build_final_response(disease_ar, disease_en, top_doc):
+def _build_final_response(disease_ar, disease_en, top_doc, lang="ar"):
     if not disease_ar and not disease_en:
+        if lang == "en":
+            return "Not enough data for a reliable diagnosis. Please upload a clearer image or describe the symptoms."
         return "لا توجد بيانات كافية لإخراج تشخيص موثوق. يُفضّل رفع صورة أوضح وذكر الأعراض النصية."
 
     meta = getattr(top_doc, "metadata", {}) if top_doc else {}
-    pathogen = (meta or {}).get("pathogen_type_ar", "")
-    description = (meta or {}).get("short_description_ar", "")
-    cause_parts = [p for p in [pathogen, description] if p]
-    cause = " — ".join(cause_parts) if cause_parts else "السبب غير متوفر حاليًا."
 
-    treatment_organic = (meta or {}).get("treatment_organic_ar", "")
-    treatment_chemical = (meta or {}).get("treatment_chemical_ar", "")
-    treatment_lines = []
-    if treatment_organic:
-        treatment_lines.append(f"• **عضوي:** {treatment_organic}")
-    if treatment_chemical:
-        treatment_lines.append(f"• **كيميائي:** {treatment_chemical}")
-    treatment = "\n".join(treatment_lines) if treatment_lines else "العلاج التفصيلي غير متوفر في قاعدة البيانات الحالية."
+    if lang == "en":
+        pathogen = (meta or {}).get("pathogen_type_en", "")
+        description = (meta or {}).get("short_description_en", "")
+        cause_parts = [p for p in [pathogen, description] if p]
+        cause = " — ".join(cause_parts) if cause_parts else "Cause not currently available."
 
-    lines = [
-        f"🌱 **المرض:** {disease_ar} ({disease_en})",
-        f"🔬 **السبب:** {cause}",
-        f"💊 **العلاج:**\n{treatment}",
-    ]
+        treatment_organic = (meta or {}).get("treatment_organic_ar", "")
+        treatment_chemical = (meta or {}).get("treatment_chemical_ar", "")
+        treatment_summary = (meta or {}).get("treatment_summary_en", "")
+        treatment_lines = []
+        if treatment_summary:
+            treatment_lines.append(treatment_summary)
+        else:
+            if treatment_organic:
+                treatment_lines.append(f"• **Organic:** {treatment_organic}")
+            if treatment_chemical:
+                treatment_lines.append(f"• **Chemical:** {treatment_chemical}")
+        treatment = "\n".join(treatment_lines) if treatment_lines else "Detailed treatment not available in the current database."
+
+        disease_display = disease_en or disease_ar
+        lines = [
+            f"🌱 **Disease:** {disease_display}",
+            f"🔬 **Cause:** {cause}",
+            f"💊 **Treatment:**\n{treatment}",
+        ]
+    else:
+        pathogen = (meta or {}).get("pathogen_type_ar", "")
+        description = (meta or {}).get("short_description_ar", "")
+        cause_parts = [p for p in [pathogen, description] if p]
+        cause = " — ".join(cause_parts) if cause_parts else "السبب غير متوفر حاليًا."
+
+        treatment_organic = (meta or {}).get("treatment_organic_ar", "")
+        treatment_chemical = (meta or {}).get("treatment_chemical_ar", "")
+        treatment_lines = []
+        if treatment_organic:
+            treatment_lines.append(f"• **عضوي:** {treatment_organic}")
+        if treatment_chemical:
+            treatment_lines.append(f"• **كيميائي:** {treatment_chemical}")
+        treatment = "\n".join(treatment_lines) if treatment_lines else "العلاج التفصيلي غير متوفر في قاعدة البيانات الحالية."
+
+        disease_display = disease_ar or disease_en
+        lines = [
+            f"🌱 **المرض:** {disease_display}",
+            f"🔬 **السبب:** {cause}",
+            f"💊 **العلاج:**\n{treatment}",
+        ]
     return "\n\n".join(lines)
 
 
@@ -553,6 +563,7 @@ def response_agent(state: State):
     context = state.get("context")
     disease_ar = state.get("decision_disease_ar", "")
     disease_en = state.get("decision_disease_en", "")
+    lang = state.get("ui_lang", "ar")
 
     if (not disease_ar and not disease_en) and (context or []):
         fallback_meta = getattr(context[0], "metadata", {}) or {}
@@ -568,6 +579,7 @@ def response_agent(state: State):
         disease_ar=disease_ar,
         disease_en=disease_en,
         top_doc=top_doc,
+        lang=lang,
     )
 
     return {"response": response_text}
@@ -682,18 +694,32 @@ def evidence_agent(state: State):
     }
 
 
-def chat_response(user_message: str, crop_type: str = None, chat_history: list = None):
+def chat_response(user_message: str, crop_type: str = None, chat_history: list = None, lang: str = "ar"):
     try:
+        from infrastructure.prompts import chat_prompt_extend
+
         k = to_int(os.getenv("RETRIEVAL_K", 4), 4)
         retrieval_mode = os.getenv("RETRIEVAL_MODE", "mmr")
         context_docs = _retrieve_context(query=user_message, crop_type=crop_type, retrieval_mode=retrieval_mode, k=k)
 
-        allowed = _allowed_diseases_from_context(context_docs)
-        allowed_str = _format_allowed_diseases(allowed)
         content = _format_retrieved_context(context_docs)
 
-        vision_desc = f"User query: {user_message}"
-        prompt = final_prompt_extend(vision_description=vision_desc, content=content, allowed_diseases=allowed_str)
+        # Build a short chat history string for context
+        history_lines = []
+        if chat_history:
+            for msg in chat_history[-6:]:
+                role = "المستخدم" if msg.get("role") == "user" else "المساعد"
+                text = msg.get("content", "")[:200]
+                if text:
+                    history_lines.append(f"{role}: {text}")
+        history_str = "\n".join(history_lines)
+
+        prompt = chat_prompt_extend(
+            user_message=user_message,
+            content=content,
+            chat_history=history_str,
+            lang=lang,
+        )
 
         message = HumanMessage(content=prompt)
         response = text_llm.invoke([message])
