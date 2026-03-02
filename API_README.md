@@ -17,6 +17,8 @@
 
 ## 🚀 Running the Backend
 
+**Option A — Using venv:**
+
 ```bash
 # 1. Make sure Python 3.11 is installed
 python3.11 --version
@@ -35,6 +37,25 @@ pip install -r requirements.txt
 python infrastructure/create_db.py
 
 # 6. Start the server
+uvicorn api:app --reload --port 8000
+```
+
+**Option B — Using Conda:**
+
+```bash
+# 1. Create a conda environment with Python 3.11
+conda create -n plant_disease python=3.11 -y
+
+# 2. Activate it
+conda activate plant_disease
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Build the knowledge base (run once)
+python infrastructure/create_db.py
+
+# 5. Start the server
 uvicorn api:app --reload --port 8000
 ```
 
