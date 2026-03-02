@@ -21,13 +21,20 @@
 # 1. Make sure Python 3.11 is installed
 python3.11 --version
 
-# 2. Install dependencies
+# 2. Create a virtual environment
+python3.11 -m venv venv
+
+# 3. Activate it
+source venv/bin/activate        # macOS / Linux
+# venv\Scripts\activate          # Windows
+
+# 4. Install dependencies
 pip install -r requirements.txt
 
-# 3. Build the knowledge base (run once)
+# 5. Build the knowledge base (run once)
 python infrastructure/create_db.py
 
-# 4. Start the server
+# 6. Start the server
 uvicorn api:app --reload --port 8000
 ```
 
