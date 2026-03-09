@@ -101,6 +101,38 @@ npm run dev
 
 ## 🔧 Environment Setup
 
+### ⚠️ Backend API Keys (REQUIRED - Do This First!)
+
+The backend needs API keys to work. **You must create your own `.env` file** with your own keys:
+
+```bash
+# Copy the example file
+cp .env.example .env
+```
+
+Then open `.env` and add your keys:
+
+```env
+# REQUIRED — Get it free from https://console.groq.com/keys
+GROQ_API_KEY=your_groq_api_key_here
+
+# OPTIONAL — Get from https://app.tavily.com (web search for disease verification)
+TAVILY_API_KEY=your_tavily_api_key_here
+
+# OPTIONAL — Get from https://my.plantnet.org (plant identification)
+PLANTNET_API_KEY=your_plantnet_api_key_here
+```
+
+| Key | Where to get it | Required? |
+|-----|----------------|-----------|
+| `GROQ_API_KEY` | [console.groq.com/keys](https://console.groq.com/keys) — Sign up free | ✅ **Yes** |
+| `TAVILY_API_KEY` | [app.tavily.com](https://app.tavily.com) | ❌ Optional |
+| `PLANTNET_API_KEY` | [my.plantnet.org](https://my.plantnet.org) | ❌ Optional |
+
+> **🔒 Note:** Each developer should use their own API keys. Never share or commit your `.env` file.
+
+---
+
 ### Backend Setup
 
 #### Option 1: Using Virtual Environment (venv)

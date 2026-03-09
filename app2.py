@@ -149,13 +149,13 @@ st.markdown(
 
     /* Custom scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    ::-webkit-scrollbar-track { background: #d5e8d4; border-radius: 10px; }
     ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #4CAF50, #2E7D32); border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #66BB6A, #4CAF50); }
 
     /* Chat messages styling */
     .stChatMessage {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #e8f5e9 0%, #dcedc8 100%);
         border-radius: 15px;
         padding: 1.2rem;
         margin: 0.8rem 0;
@@ -184,10 +184,10 @@ st.markdown(
     /* Input field styling */
     .stChatInputContainer {
         border-radius: 25px;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        background: linear-gradient(135deg, #e8f5e9 0%, #dcedc8 100%);
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         padding: 0.5rem;
-        border: 2px solid #e0e0e0;
+        border: 2px solid #a5d6a7;
         transition: all 0.3s ease;
     }
     .stChatInputContainer:focus-within {
@@ -240,12 +240,12 @@ st.markdown(
 
     /* Expander styling */
     .streamlit-expanderHeader {
-        background: linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%);
+        background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
         border-radius: 12px; padding: 0.8rem 1rem; font-weight: 600;
         transition: all 0.3s ease;
     }
     .streamlit-expanderHeader:hover {
-        background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
+        background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
     }
 
     /* Title styling */
@@ -260,7 +260,7 @@ st.markdown(
     /* Selectbox styling */
     .stSelectbox > div > div {
         border-radius: 12px;
-        border: 2px solid #e0e0e0;
+        border: 2px solid #a5d6a7;
         transition: all 0.3s ease;
     }
     .stSelectbox > div > div:focus-within {
