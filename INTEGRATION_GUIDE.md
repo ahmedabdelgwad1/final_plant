@@ -1013,3 +1013,23 @@ Expected response:
 ```json
 {"status":"ok","db_ready":true}
 ```
+
+---
+
+## 🌍 Production Environment (Live Server)
+
+The backend has been successfully deployed and is currently running live on **Hugging Face Spaces**. You don't need to run it locally unless you're making backend modifications.
+
+**Live API URL:**
+```env
+VITE_API_URL=https://Ahmed3182004-final-plant.hf.space
+```
+
+### ⚙️ Server Specifications & Capacity:
+- **Hosting Provider:** Hugging Face Spaces (Docker Environment)
+- **RAM:** 16 GB (Excellent for fast ChromaDB vector searches)
+- **CPU:** 2 vCPU 
+- **Capacity:** Can handle approximately **20-30 concurrent users** smoothly without crashing.
+
+### 🔌 How to connect to the Live API:
+Instead of running Python locally, simply update your React project's `.env` file to use the live link above. The API endpoints (`/api/crops`, `/api/chat`, `/api/analyze`) will work automatically over the internet.
