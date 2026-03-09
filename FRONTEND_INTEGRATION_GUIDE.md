@@ -63,18 +63,57 @@
 
 ### Backend Setup
 
+#### Option 1: Using Virtual Environment (venv)
+
+**First time setup:**
 ```bash
 # Navigate to project directory
 cd /Users/apple/Desktop/final_plant
 
-# Activate virtual environment
-source venv/bin/activate
-# OR if using conda
-# conda activate plant_disease
+# Create virtual environment
+python3 -m venv venv
 
-# Start the FastAPI server
+# Activate the environment
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+**Starting the backend (subsequent times):**
+```bash
+cd /Users/apple/Desktop/final_plant
+source venv/bin/activate
 uvicorn api:app --reload --port 8000
 ```
+
+---
+
+#### Option 2: Using Conda
+
+**First time setup:**
+```bash
+# Navigate to project directory
+cd /Users/apple/Desktop/final_plant
+
+# Create conda environment
+conda create -n plant_disease python=3.11
+
+# Activate the environment
+conda activate plant_disease
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+**Starting the backend (subsequent times):**
+```bash
+cd /Users/apple/Desktop/final_plant
+conda activate plant_disease
+uvicorn api:app --reload --port 8000
+```
+
+---
 
 **Verify Backend is Running:**
 ```bash
