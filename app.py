@@ -507,7 +507,7 @@ for msg in st.session_state["messages"]:
     avatar = "👨‍🌾" if msg["role"] == "user" else "🤖"
     with st.chat_message(msg["role"], avatar=avatar):
         if msg.get("image"):
-            st.image(msg["image"], width=300, use_column_width=False)
+            st.image(msg["image"], width=300, use_container_width=False)
         st.markdown(msg["content"])
 
 # ── details expander (after last analysis) ───────────────────────────────────
