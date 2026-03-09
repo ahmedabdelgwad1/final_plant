@@ -6,7 +6,47 @@
 
 ---
 
-## 📋 Table of Contents
+## � Quick Start Overview
+
+**GitHub Repository:** [https://github.com/ahmedabdelgwad1/final_plant](https://github.com/ahmedabdelgwad1/final_plant)
+
+This guide contains **everything** you need to integrate with the Plant Disease Diagnosis API:
+
+- ✅ **Backend setup** - How to start the FastAPI server (venv or conda)
+- ✅ **Environment configuration** - Setting up `.env` for Vite or Create React App
+- ✅ **API endpoints** - Full specification with FormData examples
+- ✅ **Complete React component** - Production-ready, copy-paste code (350+ lines)
+- ✅ **Chat history** - Context-aware conversation implementation
+- ✅ **Image + text upload** - Send descriptions with images
+- ✅ **Troubleshooting** - Solutions for common issues (503, 422, CORS, etc.)
+- ✅ **Testing checklist** - Comprehensive testing guide
+
+### 🚀 Quick Integration Steps
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/ahmedabdelgwad1/final_plant.git
+cd final_plant
+
+# 2. Start the backend
+source venv/bin/activate  # or: conda activate plant_disease
+uvicorn api:app --reload --port 8000
+
+# 3. In your React project
+npm install react-markdown
+echo "VITE_API_URL=http://localhost:8000" > .env
+
+# 4. Copy the React component from this guide (Section: Complete React Component)
+
+# 5. Start your React dev server
+npm run dev
+```
+
+**⏱️ Integration Time:** 15-30 minutes (including reading this guide)
+
+---
+
+## �📋 Table of Contents
 
 1. [Architecture Overview](#architecture-overview)
 2. [Environment Setup](#environment-setup)
