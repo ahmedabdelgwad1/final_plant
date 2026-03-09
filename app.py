@@ -587,28 +587,39 @@ with col_camera:
         label_visibility="collapsed"
     )
 
-# If image is uploaded but no crop selected, show crop selector
-if uploaded_image and not crop_slug:
+# If there's a new image uploaded, always ask to set/confirm the crop
+is_new_image = uploaded_image and uploaded_image != st.session_state.get("pending_image")
+
+if is_new_image:
     with col_crop_selector:
         st.markdown(
             f"""
             <div style='
-                background: linear-gradient(135deg, #FFF3E0 0%, #FFE082 100%);
+                background: #3e2703;
                 padding: 0.8rem;
                 border-radius: 10px;
                 border-left: 4px solid #FF9800;
                 margin-bottom: 0.8rem;
             '>
-                <p style='margin: 0; color: #E65100; font-weight: 600;'>
-                    ⚠️ {"اختر المحصول أولاً" if lang == "ar" else "Select crop first"}
+                <p style='margin: 0; color: #FFA726; font-weight: 600;'>
+                    ⚠️ {"برجاء تحديد المحصول لهذه الصورة" if lang == "ar" else "Please select the crop for this image"}
                 </p>
             </div>
             """,
             unsafe_allow_html=True
         )
+        
+        # Determine index of currently selected crop if any, to make it easier, or default to 0
+        default_idx = 0
+        current_sel = st.session_state.get("selected_crop")
+        if current_sel in crop_options:
+            opts_list = list(crop_options.keys())
+            default_idx = opts_list.index(current_sel) + 1
+            
         crop_choice = st.selectbox(
             "🌾 " + ("اختر المحصول:" if lang == "ar" else "Select Crop:"),
             options=["", *crop_options.keys()],
+            index=default_idx,
             key="crop_selector_for_image"
         )
         if crop_choice:
@@ -620,33 +631,27 @@ if uploaded_image and not crop_slug:
             ):
                 st.session_state["selected_crop"] = crop_choice
                 st.session_state["crop_slug"] = crop_options.get(crop_choice)
-                crop_slug = st.session_state["crop_slug"]
-                selected_crop_label = crop_choice
-                # Trigger rerun to start analysis with crop
+                
+                st.session_state["pending_image"] = uploaded_image
+                
+                img_bytes = uploaded_image.getvalue()
+                _add_msg("user", t("chat_image_sent"), image=img_bytes)
+
+                suffix = Path(uploaded_image.name).suffix or ".jpg"
+                with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+                    tmp.write(uploaded_image.getbuffer())
+                    image_path = tmp.name
+
+                with st.spinner(t("analyzing")):
+                    result = _run_analysis(st.session_state["crop_slug"], image_path, None, lang=lang)
+
+                st.session_state["last_result"] = result
+                response_text = result.get("response", t("empty_result"))
+                if result.get("vision_error"):
+                    response_text += f"\n\n⚠️ {t('vision_partial')}"
+                response_text += f"\n\n---\n{t('followup_prompt')}"
+                _add_msg("assistant", response_text)
                 st.rerun()
-
-# auto-trigger analysis when image is uploaded AND crop is selected
-if uploaded_image and uploaded_image != st.session_state.get("pending_image") and crop_slug:
-    st.session_state["pending_image"] = uploaded_image
-    
-    img_bytes = uploaded_image.getvalue()
-    _add_msg("user", t("chat_image_sent"), image=img_bytes)
-
-    suffix = Path(uploaded_image.name).suffix or ".jpg"
-    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-        tmp.write(uploaded_image.getbuffer())
-        image_path = tmp.name
-
-    with st.spinner(t("analyzing")):
-        result = _run_analysis(crop_slug, image_path, None, lang=lang)
-
-    st.session_state["last_result"] = result
-    response_text = result.get("response", t("empty_result"))
-    if result.get("vision_error"):
-        response_text += f"\n\n⚠️ {t('vision_partial')}"
-    response_text += f"\n\n---\n{t('followup_prompt')}"
-    _add_msg("assistant", response_text)
-    st.rerun()
 
 # ── chat input (always visible at bottom) ────────────────────────────────────
 
