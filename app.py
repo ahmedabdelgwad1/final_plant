@@ -115,6 +115,8 @@ for key, default in {
     "messages": [],
     "last_result": None,
     "pending_image": None,
+    "selected_crop": None,
+    "crop_slug": None,
 }.items():
     if key not in st.session_state:
         st.session_state[key] = default
@@ -154,10 +156,32 @@ if not is_db_ready():
         st.success(t("db_ready"))
         st.rerun()
 
+# ── crop indicator (optional - shown if selected) ────────────────────────────
+
+crop_slug = st.session_state.get("crop_slug")
+selected_crop_label = st.session_state.get("selected_crop")
+
+if selected_crop_label:
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        st.success(f"🌱 {selected_crop_label}")
+    with col2:
+        if st.button("🔄", help=("تغيير المحصول" if lang == "ar" else "Change crop")):
+            st.session_state["selected_crop"] = None
+            st.session_state["crop_slug"] = None
+            st.rerun()
+
 # ── welcome message (shown once) ─────────────────────────────────────────────
 
 if not st.session_state["messages"]:
-    _add_msg("assistant", t("chat_welcome"))
+    welcome = t("chat_welcome")
+    if lang == "ar":
+        welcome += "\n\n💬 اسأل عن أمراض النباتات"
+        welcome += "\n\n📸 أو اضغط على زر الكاميرا لتحليل صورة"
+    else:
+        welcome += "\n\n💬 Ask about plant diseases"
+        welcome += "\n\n📸 Or click the camera button to analyze an image"
+    _add_msg("assistant", welcome)
 
 # ── render existing messages ─────────────────────────────────────────────────
 
@@ -196,53 +220,70 @@ if result:
         if src:
             st.write(f"**{t('source')}:** {src}")
 
-# ── upload strip (compact, ChatGPT-style attachment bar) ─────────────────────
+# ── camera/upload button (always visible) ───────────────────────────────────
 
-upload_col, crop_col = st.columns([3, 2])
-with upload_col:
+st.markdown("---")
+
+# Show crop selector if image upload is attempted without crop
+if "show_crop_selector" not in st.session_state:
+    st.session_state["show_crop_selector"] = False
+
+col_camera, col_crop_selector = st.columns([2, 3])
+
+with col_camera:
     uploaded_image = st.file_uploader(
-        t("upload"), type=["jpg", "jpeg", "png"], label_visibility="collapsed"
+        "📸 " + ("ارفع صورة النبات" if lang == "ar" else "Upload Plant Image"),
+        type=["jpg", "jpeg", "png"],
+        help=("التقط صورة أو ارفع من المعرض" if lang == "ar" else "Take photo or upload from gallery"),
+        key="image_uploader"
     )
-with crop_col:
-    selected_crop_label = st.selectbox(
-        t("crop_label"),
-        options=[t("crop_placeholder"), *crop_options.keys()],
-        label_visibility="collapsed",
-    )
-crop_selected = selected_crop_label != t("crop_placeholder")
-crop_slug = crop_options.get(selected_crop_label)
 
-# auto-trigger analysis when image is uploaded
-if uploaded_image and uploaded_image != st.session_state.get("pending_image"):
+# If image is uploaded but no crop selected, show crop selector
+if uploaded_image and not crop_slug:
+    with col_crop_selector:
+        st.warning("⚠️ " + ("اختر المحصول أولاً" if lang == "ar" else "Select crop first"))
+        crop_choice = st.selectbox(
+            "اختر المحصول:" if lang == "ar" else "Select Crop:",
+            options=["", *crop_options.keys()],
+            key="crop_selector_for_image"
+        )
+        if crop_choice:
+            if st.button("✅ " + ("تأكيد وتحليل" if lang == "ar" else "Confirm & Analyze"), type="primary"):
+                st.session_state["selected_crop"] = crop_choice
+                st.session_state["crop_slug"] = crop_options.get(crop_choice)
+                crop_slug = st.session_state["crop_slug"]
+                selected_crop_label = crop_choice
+                # Trigger rerun to start analysis with crop
+                st.rerun()
+
+# auto-trigger analysis when image is uploaded AND crop is selected
+if uploaded_image and uploaded_image != st.session_state.get("pending_image") and crop_slug:
     st.session_state["pending_image"] = uploaded_image
+    
+    img_bytes = uploaded_image.getvalue()
+    _add_msg("user", t("chat_image_sent"), image=img_bytes)
 
-    if not crop_selected:
-        _add_msg("user", t("chat_image_sent"), image=uploaded_image.getvalue())
-        _add_msg("assistant", t("ask_crop_first"))
-        st.rerun()
-    else:
-        img_bytes = uploaded_image.getvalue()
-        _add_msg("user", t("chat_image_sent"), image=img_bytes)
+    suffix = Path(uploaded_image.name).suffix or ".jpg"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        tmp.write(uploaded_image.getbuffer())
+        image_path = tmp.name
 
-        suffix = Path(uploaded_image.name).suffix or ".jpg"
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            tmp.write(uploaded_image.getbuffer())
-            image_path = tmp.name
+    with st.spinner(t("analyzing")):
+        result = _run_analysis(crop_slug, image_path, None, lang=lang)
 
-        with st.spinner(t("analyzing")):
-            result = _run_analysis(crop_slug, image_path, None, lang=lang)
-
-        st.session_state["last_result"] = result
-        response_text = result.get("response", t("empty_result"))
-        if result.get("vision_error"):
-            response_text += f"\n\n⚠️ {t('vision_partial')}"
-        response_text += f"\n\n---\n{t('followup_prompt')}"
-        _add_msg("assistant", response_text)
-        st.rerun()
+    st.session_state["last_result"] = result
+    response_text = result.get("response", t("empty_result"))
+    if result.get("vision_error"):
+        response_text += f"\n\n⚠️ {t('vision_partial')}"
+    response_text += f"\n\n---\n{t('followup_prompt')}"
+    _add_msg("assistant", response_text)
+    st.rerun()
 
 # ── chat input (always visible at bottom) ────────────────────────────────────
 
-if prompt := st.chat_input(t("chat_placeholder")):
+chat_placeholder = "💬 " + ("اسأل عن أي أمراض تصيب النباتات..." if lang == "ar" else "Ask about any plant diseases...")
+
+if prompt := st.chat_input(chat_placeholder):
     _add_msg("user", prompt)
 
     with st.chat_message("user", avatar="🧑‍🌾"):
@@ -252,7 +293,7 @@ if prompt := st.chat_input(t("chat_placeholder")):
         with st.spinner(t("chat_replying")):
             reply = chat_response(
                 prompt,
-                crop_type=crop_slug if crop_selected else None,
+                crop_type=crop_slug,
                 chat_history=st.session_state["messages"],
                 lang=lang,
             )
@@ -261,5 +302,6 @@ if prompt := st.chat_input(t("chat_placeholder")):
         st.markdown(text)
 
     _add_msg("assistant", text)
+    st.rerun()
 
 

@@ -1,6 +1,6 @@
 # 🌿 Plant Disease API — React Integration Guide
 
-> This file is for the React developer to integrate the frontend with the backend API.
+> Complete API documentation for integrating with React frontend.
 
 ---
 
@@ -12,12 +12,13 @@
 | **Python**       | 3.11.10                        |
 | **Base URL**     | `http://localhost:8000`        |
 | **Content-Type** | `multipart/form-data` (POST)   |
+| **Version**      | 2.0.0                          |
 
 ---
 
 ## 🚀 Running the Backend
 
-**Option A — Using venv:**
+**Using venv:**
 
 ```bash
 # 1. Make sure Python 3.11 is installed
@@ -33,29 +34,14 @@ source venv/bin/activate        # macOS / Linux
 # 4. Install dependencies
 pip install -r requirements.txt
 
-# 5. Build the knowledge base (run once)
+# 5. Create .env file with your API keys
+cp .env.example .env
+# Edit .env and add your GROQ_API_KEY
+
+# 6. Build the knowledge base (run once)
 python infrastructure/create_db.py
 
-# 6. Start the server
-uvicorn api:app --reload --port 8000
-```
-
-**Option B — Using Conda:**
-
-```bash
-# 1. Create a conda environment with Python 3.11
-conda create -n plant_disease python=3.11 -y
-
-# 2. Activate it
-conda activate plant_disease
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Build the knowledge base (run once)
-python infrastructure/create_db.py
-
-# 5. Start the server
+# 7. Start the server
 uvicorn api:app --reload --port 8000
 ```
 
@@ -65,7 +51,7 @@ The server will be available at `http://localhost:8000`
 
 ## 📡 API Endpoints
 
-### 1. Health Check
+### 1. Health Check ✅
 
 ```
 GET /api/health
@@ -74,12 +60,17 @@ GET /api/health
 **Response:**
 
 ```json
-{ "status": "ok", "db_ready": true }
+{ 
+  "status": "ok", 
+  "db_ready": true 
+}
 ```
+
+**Usage:** Check if backend is running and database is ready before allowing user interactions.
 
 ---
 
-### 2. List Available Crops
+### 2. List Available Crops 🌾
 
 ```
 GET /api/crops
@@ -99,11 +90,14 @@ GET /api/crops
 }
 ```
 
-> Use the `slug` value as the `crop_type` when sending an image.
+**Usage:** 
+- Display crop selection dropdown with `name_ar` or `name_en`
+- User **must** select a crop before chatting or uploading images
+- Use the `slug` value as `crop_type` parameter in subsequent API calls
 
 ---
 
-### 3. Chat (Main Endpoint)
+### 3. Text Chat 💬
 
 ```
 POST /api/chat
@@ -114,28 +108,28 @@ Content-Type: multipart/form-data
 
 | Field          | Type   | Required | Default | Description                                       |
 | -------------- | ------ | -------- | ------- | ------------------------------------------------- |
-| `message`      | string | ❌       | `""`    | User's text message                               |
-| `image`        | file   | ❌       | `null`  | Plant image (jpg, png, webp)                      |
-| `crop_type`    | string | ❌       | `""`    | Crop slug — required when sending an image        |
+| `message`      | string | ✅       | -       | User's text message                               |
+| `crop_type`    | string | ❌       | `""`    | Crop slug from `/api/crops` (optional - for more specific answers) |
 | `lang`         | string | ❌       | `"ar"`  | Response language: `"ar"` or `"en"`               |
 | `chat_history` | string | ❌       | `"[]"`  | JSON string of previous messages array            |
 
-**Response (always):**
+**Response:**
 
 ```json
-{ "reply": "..." }
+{
+  "success": true,
+  "reply": "Late blight is caused by Phytophthora infestans...",
+  "crop_type": "tomato"
+}
 ```
 
----
-
-## 🔀 Three Scenarios
-
-### Scenario 1: Text Only (Chat)
+**Example (JavaScript):**
 
 ```js
 const formData = new FormData();
-formData.append("message", "What is the most dangerous tomato disease?");
-formData.append("lang", "en");
+formData.append("message", "ما هو مرض اللفحة المتأخرة؟");
+formData.append("crop_type", "tomato"); // optional - can be empty for general questions
+formData.append("lang", "ar");
 formData.append("chat_history", JSON.stringify(chatHistory));
 
 const res = await fetch("http://localhost:8000/api/chat", {
@@ -146,85 +140,233 @@ const data = await res.json();
 console.log(data.reply);
 ```
 
-### Scenario 2: Image + Crop (Diagnosis)
+---
+
+### 4. Image Analysis 📸
+
+```
+POST /api/analyze
+Content-Type: multipart/form-data
+```
+
+**Form Fields:**
+
+| Field          | Type   | Required | Default | Description                                       |
+| -------------- | ------ | -------- | ------- | ------------------------------------------------- |
+| `image`        | file   | ✅       | -       | Plant image (jpg, jpeg, png)                      |
+| `crop_type`    | string | ✅       | -       | Crop slug from `/api/crops`                       |
+| `lang`         | string | ❌       | `"ar"`  | Response language: `"ar"` or `"en"`               |
+| `message`      | string | ❌       | `""`    | Optional question about the image                 |
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "reply": "🌱 **المرض:** اللفحة المتأخرة\n\n🔬 **السبب:** فطر Phytophthora infestans...\n\n💊 **العلاج:** ...",
+  "crop_type": "tomato",
+  "details": {
+    "symptom_scores": [
+      {
+        "disease_name_ar": "اللفحة المتأخرة",
+        "disease_name_en": "Late Blight",
+        "score": 95
+      }
+    ],
+    "plantnet_result": "...",
+    "web_evidence": [
+      {
+        "title": "Late Blight Management",
+        "url": "https://..."
+      }
+    ],
+    "verification_result": "...",
+    "source": "...",
+    "vision_error": false
+  }
+}
+```
+
+**Example (JavaScript):**
 
 ```js
 const formData = new FormData();
 formData.append("image", fileInput.files[0]);
-formData.append("crop_type", "tomato");
-formData.append("lang", "en");
-formData.append("message", ""); // optional text with image
+formData.append("crop_type", selectedCrop);
+formData.append("lang", "ar");
+formData.append("message", ""); // optional
 
-const res = await fetch("http://localhost:8000/api/chat", {
+const res = await fetch("http://localhost:8000/api/analyze", {
   method: "POST",
   body: formData,
 });
 const data = await res.json();
+
+// Display main reply
 console.log(data.reply);
-// → 🌱 **Disease:** Late Blight
-// → 🔬 **Cause:** Phytophthora infestans — ...
-// → 💊 **Treatment:** ...
+
+// Show details in expandable section
+console.log(data.details.symptom_scores);
 ```
 
-### Scenario 3: Image Without Crop
+---
+
+### 5. Build Database (Admin) 🔧
+
+```
+POST /api/build-db
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "message": "Database built successfully"
+}
+```
+
+**Usage:** Only needed if database is not ready (when `db_ready: false` in health check).
+
+---
+
+## 🎯 Complete React Integration Flow
+
+### Step 1: App Initialization
 
 ```js
-const formData = new FormData();
-formData.append("image", fileInput.files[0]);
-// crop_type is missing!
+// On app mount
+useEffect(() => {
+  // Check health
+  fetch("http://localhost:8000/api/health")
+    .then(res => res.json())
+    .then(data => {
+      if (!data.db_ready) {
+        alert("Database not ready! Contact admin.");
+      }
+    });
 
-const res = await fetch("http://localhost:8000/api/chat", {
-  method: "POST",
-  body: formData,
-});
-const data = await res.json();
-console.log(data.reply);
-// → "Please select the crop type first."
+  // Load crops
+  fetch("http://localhost:8000/api/crops")
+    .then(res => res.json())
+    .then(data => {
+      setCrops(data.crops);
+    });
+}, []);
 ```
 
-> The API will ask the user to select a crop — show a dropdown populated from `/api/crops`.
+### Step 2: Text Chat (Crop Optional)
+
+```js
+// Text chat - crop_type is optional
+const sendMessage = async (message) => {
+  const formData = new FormData();
+  formData.append("message", message);
+  formData.append("crop_type", selectedCrop || ""); // optional
+  formData.append("lang", lang);
+  formData.append("chat_history", JSON.stringify(chatHistory));
+
+  const res = await fetch("http://localhost:8000/api/chat", {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json();
+  
+  // Add to chat history
+  setChatHistory([
+    ...chatHistory,
+    { role: "user", content: message },
+    { role: "assistant", content: data.reply }
+  ]);
+};
+```
+
+### Step 3: Image Upload (Crop Required)
+
+```js
+// Image analysis - crop_type is REQUIRED
+const handleImageUpload = (imageFile) => {
+  // Check if crop is selected
+  if (!selectedCrop) {
+    // Show modal/popup to select crop first
+    setShowCropSelector(true);
+    setPendingImage(imageFile);
+    return;
+  }
+  
+  analyzeImage(imageFile);
+};
+
+const analyzeImage = async (imageFile) => {
+  const formData = new FormData();
+  formData.append("image", imageFile);
+  formData.append("crop_type", selectedCrop); // required!
+  formData.append("lang", lang);
+
+  setLoading(true);
+  const res = await fetch("http://localhost:8000/api/analyze", {
+    method: "POST",
+    body: formData,
+  });
+  const data = await res.json();
+  setLoading(false);
+
+  // Display result
+  setAnalysisResult(data);
+  
+  // Add to chat
+  setChatHistory([
+    ...chatHistory,
+    { role: "user", content: "[صورة تم رفعها]", image: URL.createObjectURL(imageFile) },
+    { role: "assistant", content: data.reply }
+  ]);
+};
+```
 
 ---
 
 ## 💬 Chat History Format
 
-Send `chat_history` as a JSON string containing an array of messages:
-
 ```js
 const chatHistory = [
-  { role: "user", content: "What is late blight?" },
-  { role: "assistant", content: "Late blight is a disease caused by..." },
-  { role: "user", content: "How do I treat it?" },
+  { role: "user", content: "ما هو مرض اللفحة المتأخرة؟" },
+  { role: "assistant", content: "اللفحة المتأخرة هو مرض..." },
+  { role: "user", content: "كيف أعالجه؟" },
+  { role: "assistant", content: "العلاج يشمل..." }
 ];
 
+// Send as JSON string
 formData.append("chat_history", JSON.stringify(chatHistory));
 ```
 
+- Only the **last 6 messages** are used for context
 - `role`: `"user"` or `"assistant"`
-- `content`: The message text
-- The backend only uses the **last 6 messages** for context
+- `content`: Message text (Markdown supported)
 
 ---
 
 ## 🌐 CORS
 
-CORS is open for all origins (`*`), so you can run React on any port:
+CORS is configured to allow all origins (`*`), so you can run React on any port:
 
 ```
-http://localhost:3000  ✅
-http://localhost:5173  ✅
-http://127.0.0.1:3000  ✅
+✅ http://localhost:3000
+✅ http://localhost:5173
+✅ http://127.0.0.1:3000
 ```
 
 ---
 
 ## ⚠️ Error Handling
 
-| Status | Meaning                                            |
-| ------ | -------------------------------------------------- |
-| `200`  | Success — response is in `reply`                   |
-| `400`  | No message or image was sent                       |
-| `503`  | Knowledge base not built yet (run `create_db.py`)  |
+| Status | Error                                              | Action                                    |
+| ------ | -------------------------------------------------- | ----------------------------------------- |
+| `200`  | Success                                            | Display `reply`                           |
+| `400`  | Missing required fields                            | Show error message to user                |
+| `503`  | Database not ready                                 | Contact backend admin                     |
+| `500`  | Internal server error                              | Retry or contact support                  |
+
+**Example:**
 
 ```js
 try {
@@ -232,40 +374,41 @@ try {
     method: "POST",
     body: formData,
   });
+  
   if (!res.ok) {
-    const err = await res.json();
-    console.error(err.detail);
+    const error = await res.json();
+    alert(error.detail);
     return;
   }
+  
   const data = await res.json();
-  // use data.reply
+  // Use data.reply
 } catch (e) {
   console.error("Network error:", e);
+  alert("فشل الاتصال بالخادم");
 }
 ```
 
 ---
 
-## 🧩 Suggested React Flow
+## 📝 Important Notes
 
-```
-1. App loads → GET /api/crops → populate crop dropdown
-2. User types a message → POST /api/chat (text only)
-3. User uploads an image → show crop dropdown
-4. User selects crop + sends → POST /api/chat (image + crop)
-5. Display reply (supports Markdown — use react-markdown)
-6. Keep chat_history array in state, send it with each request
-```
+1. **Markdown Rendering**: All responses are in Markdown format. Use `react-markdown` or similar library:
+   ```bash
+   npm install react-markdown
+   ```
 
----
+2. **Image Formats**: Supported formats are JPG, JPEG, PNG.
 
-## 📝 Notes
+3. **Language**: Send `lang: "ar"` for Arabic or `lang: "en"` for English. The entire response will be in that language.
 
-- The response is **Markdown** formatted — use `react-markdown` to render it.
-- Supported image formats: **JPG, PNG, WebP**.
-- `lang` accepts `"ar"` (Arabic) or `"en"` (English) — controls the entire response language.
-- If there's an issue with the image, the response will include a `⚠️` warning.
-- A `.env` file must exist in the backend root with at least `GROQ_API_KEY`.
+4. **Crop Selection**: User **must** select crop before any interaction. This is enforced by requiring `crop_type` in all endpoints.
+
+5. **Details Object**: The `/api/analyze` endpoint returns a `details` object with additional information:
+   - `symptom_scores`: Array of possible diseases with confidence scores
+   - `plantnet_result`: Plant verification result
+   - `web_evidence`: Related articles/resources
+   - Use these for "Show Details" or "More Info" sections in your UI
 
 ---
 
@@ -273,8 +416,85 @@ try {
 
 | Variable            | Required | Description                              |
 | ------------------- | -------- | ---------------------------------------- |
-| `GROQ_API_KEY`      | ✅       | Groq API key (required)                  |
+| `GROQ_API_KEY`      | ✅       | Groq API key (required for AI)           |
 | `PLANTNET_API_KEY`  | ❌       | PlantNet verification (optional)         |
 | `TAVILY_API_KEY`    | ❌       | Additional web search (optional)         |
+| `RETRIEVAL_MODE`    | ❌       | `mmr` or `similarity` (default: `mmr`)   |
+| `RETRIEVAL_K`       | ❌       | Number of docs to retrieve (default: 4)  |
 
-> The backend is my responsibility — you don't need to modify it. Just run it and use the API.
+---
+
+## 🎨 Suggested UI Flow
+
+```
+┌─────────────────────────────────────────┐
+│  1. Language Selection (ar/en)          │
+└─────────────────────────────────────────┘
+                ↓
+┌─────────────────────────────────────────┐
+│  2. Chat Interface (Direct Access)      │
+│     ┌─────────────────────────────────┐ │
+│     │  Chat History                   │ │
+│     │  (Messages)                     │ │
+│     └─────────────────────────────────┘ │
+│                                         │
+│     [💬 Text Input]  (always available) │
+│     [📸 Upload Image] ← if no crop →   │
+│                         show selector   │
+└─────────────────────────────────────────┘
+                ↓
+        (when uploading image)
+                ↓
+┌─────────────────────────────────────────┐
+│  3. Crop Selection Modal/Popup          │
+│     "Please select crop first"          │
+│     [Dropdown with crop names]          │
+│     [Confirm & Analyze]                 │
+└─────────────────────────────────────────┘
+```
+
+**Key Points:**
+- Chat is available immediately (no forced crop selection)
+- Crop becomes required only when uploading an image
+- Once crop is selected, it's remembered for subsequent images
+
+---
+
+## 🧪 Testing the API
+
+You can test the API using `curl` or Postman:
+
+**List crops:**
+```bash
+curl http://localhost:8000/api/crops
+```
+
+**Text chat:**
+```bash
+curl -X POST http://localhost:8000/api/chat \
+  -F "message=What is late blight?" \
+  -F "crop_type=tomato" \
+  -F "lang=en"
+```
+
+**Image analysis:**
+```bash
+curl -X POST http://localhost:8000/api/analyze \
+  -F "image=@/path/to/image.jpg" \
+  -F "crop_type=tomato" \
+  -F "lang=en"
+```
+
+---
+
+## 📞 Support
+
+If you have any questions about the API integration, contact the backend team or refer to the FastAPI auto-generated docs at:
+
+```
+http://localhost:8000/docs
+```
+
+---
+
+**Good luck with your React integration! 🚀**

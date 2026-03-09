@@ -2,9 +2,11 @@
 FastAPI backend — unified chat API for plant disease diagnosis.
 
 Endpoints:
-    POST /api/chat    → text chat OR image + crop → diagnosis (single endpoint)
-    GET  /api/crops   → list available crops
-    GET  /api/health  → health check
+    GET  /api/health       → health check + database status
+    GET  /api/crops        → list available crops (ar & en names)
+    POST /api/chat         → text chat (requires crop_type)
+    POST /api/analyze      → image analysis (requires crop_type + image)
+    POST /api/build-db     → build knowledge base (admin endpoint)
 """
 
 import os
@@ -68,67 +70,111 @@ def list_crops():
 
 @app.post("/api/chat")
 async def chat(
-    message: str = Form(""),
+    message: str = Form(...),
     crop_type: str = Form(""),
     lang: str = Form("ar"),
     chat_history: str = Form("[]"),
-    image: UploadFile = File(None),
 ):
     """
-    Unified chat endpoint.
-    - Text only  → conversational reply
-    - Image + crop_type → disease diagnosis (disease + cause + treatment)
-    - Image without crop_type → asks user to choose crop first
+    Text-only chat endpoint.
+    Requires: message
+    Optional: crop_type (if provided, gives more specific answers)
+    Returns: conversational reply about plant diseases
     """
+    if not message.strip():
+        raise HTTPException(status_code=400, detail="Message is required")
+
     # parse chat_history from JSON string
     try:
         history = json.loads(chat_history) if chat_history else []
     except Exception:
         history = []
 
-    has_image = image is not None
-    has_text = bool(message.strip())
-
-    if not has_image and not has_text:
-        raise HTTPException(status_code=400, detail="Send a message or an image.")
-
-    # ── Image flow: run full diagnosis workflow ──────────────────────────
-    if has_image:
-        if not _is_db_ready():
-            raise HTTPException(status_code=503, detail="Knowledge base not built yet.")
-
-        if not crop_type.strip():
-            hint = "من فضلك اختر نوع النبات الأول." if lang == "ar" else "Please select the crop type first."
-            return {"reply": hint}
-
-        suffix = Path(image.filename or "img.jpg").suffix or ".jpg"
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            tmp.write(await image.read())
-            image_path = tmp.name
-
-        result = Workflow().run({
-            "chat_history": [],
-            "crop_type": crop_type.strip(),
-            "retrieval_mode": os.getenv("RETRIEVAL_MODE", "mmr").lower(),
-            "retrieval_k": to_int(os.getenv("RETRIEVAL_K", 4), 4),
-            "query": message.strip() or None,
-            "image_path": image_path,
-            "ui_lang": lang,
-        })
-
-        reply = result.get("response", "")
-        if result.get("vision_error"):
-            warning = "⚠️ حدث خطأ في تحليل الصورة." if lang == "ar" else "⚠️ Error analyzing the image."
-            reply += f"\n\n{warning}"
-
-        return {"reply": reply}
-
-    # ── Text-only flow: conversational chat ──────────────────────────────
     result = chat_response(
         user_message=message.strip(),
         crop_type=crop_type.strip() or None,
         chat_history=history,
         lang=lang,
     )
-    return {"reply": result.get("text", "")}
+    
+    return {
+        "success": True,
+        "reply": result.get("text", ""),
+        "crop_type": crop_type.strip() or None,
+    }
+
+
+@app.post("/api/analyze")
+async def analyze_image(
+    crop_type: str = Form(...),
+    image: UploadFile = File(...),
+    lang: str = Form("ar"),
+    message: str = Form(""),
+):
+    """
+    Image analysis endpoint.
+    Requires: crop_type, image
+    Returns: full diagnosis with details (disease, causes, treatment, scores)
+    """
+    if not crop_type.strip():
+        raise HTTPException(status_code=400, detail="crop_type is required. Please select crop first.")
+    
+    if not _is_db_ready():
+        raise HTTPException(status_code=503, detail="Knowledge base not ready. Please build database first.")
+
+    # Save uploaded image temporarily
+    suffix = Path(image.filename or "img.jpg").suffix or ".jpg"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        tmp.write(await image.read())
+        image_path = tmp.name
+
+    # Run full diagnosis workflow
+    result = Workflow().run({
+        "chat_history": [],
+        "crop_type": crop_type.strip(),
+        "retrieval_mode": os.getenv("RETRIEVAL_MODE", "mmr").lower(),
+        "retrieval_k": to_int(os.getenv("RETRIEVAL_K", 4), 4),
+        "query": message.strip() or None,
+        "image_path": image_path,
+        "ui_lang": lang,
+    })
+
+    # Build response
+    response_text = result.get("response", "")
+    if result.get("vision_error"):
+        warning = "⚠️ حدث خطأ في تحليل الصورة." if lang == "ar" else "⚠️ Error analyzing the image."
+        response_text += f"\n\n{warning}"
+
+    # Clean up temp file
+    try:
+        os.unlink(image_path)
+    except:
+        pass
+
+    return {
+        "success": True,
+        "reply": response_text,
+        "crop_type": crop_type.strip(),
+        "details": {
+            "symptom_scores": result.get("symptom_scores", []),
+            "plantnet_result": result.get("plantnet_result"),
+            "web_evidence": result.get("web_evidence", []),
+            "verification_result": result.get("verification_result"),
+            "source": result.get("source"),
+            "vision_error": result.get("vision_error", False),
+        }
+    }
+
+
+@app.post("/api/build-db")
+def build_database_endpoint():
+    """
+    Admin endpoint to build/rebuild the knowledge base.
+    """
+    try:
+        from infrastructure.create_db import create_database
+        create_database()
+        return {"success": True, "message": "Database built successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to build database: {str(e)}")
 
