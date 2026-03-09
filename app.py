@@ -67,15 +67,16 @@ def render_language_gate():
         """
         <div style='text-align:center; padding-top:10vh'>
             <div style='
-                background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+                background: linear-gradient(135deg, #1e3a1f 0%, #142b15 100%);
                 padding: 3rem 2rem;
                 border-radius: 20px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.4);
                 max-width: 600px;
                 margin: 0 auto;
+                color: #ffffff;
             '>
                 <h1 style='
-                    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 100%);
+                    background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     font-size: 2.5rem;
@@ -93,7 +94,7 @@ def render_language_gate():
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.markdown(
-            f"<p style='text-align:center; font-size:1.2rem; color:#555; margin-bottom:2rem'>{t('login_caption')}</p>",
+            f"<p style='text-align:center; font-size:1.2rem; color:#e0e0e0; margin-bottom:2rem'>{t('login_caption')}</p>",
             unsafe_allow_html=True
         )
         
@@ -165,7 +166,7 @@ st.markdown(
         height: 8px;
     }
     ::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: #1e1e1e;
         border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb {
@@ -176,104 +177,111 @@ st.markdown(
         background: linear-gradient(180deg, #66BB6A, #4CAF50);
     }
     
+    /* Text colors everywhere */
+    * {
+        color: #ffffff !important;
+    }
+    
     /* Chat messages styling */
     .stChatMessage {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #1e3a1f 0%, #142b15 100%);
         border-radius: 15px;
         padding: 1.2rem;
         margin: 0.8rem 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         transition: all 0.3s ease;
         border-left: 4px solid transparent;
     }
     
     .stChatMessage:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.6);
         transform: translateY(-2px);
     }
     
     /* User message styling */
     [data-testid="stChatMessageContent"]:has(> div[data-testid="stMarkdownContainer"] > p:first-child) {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        background: linear-gradient(135deg, #1e3a1f 0%, #142b15 100%);
         border-left-color: #4CAF50;
     }
     
     /* Bot message styling */
     .stChatMessage[data-testid="chat-message-assistant"] {
-        background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+        background: linear-gradient(135deg, #0d293e 0%, #081a27 100%);
         border-left-color: #2196F3;
     }
     
     /* Input field styling */
     .stChatInputContainer {
         border-radius: 25px;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        background: linear-gradient(135deg, #2b3a2f 0%, #1d2b20 100%);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         padding: 0.5rem;
-        border: 2px solid #e0e0e0;
+        border: 2px solid #4CAF50;
         transition: all 0.3s ease;
     }
     
     .stChatInputContainer:focus-within {
-        border-color: #4CAF50;
-        box-shadow: 0 4px 16px rgba(76, 175, 80, 0.2);
+        border-color: #66BB6A;
+        box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
     }
     
     /* Button styling */
     .stButton > button {
         border-radius: 12px;
+        background: #1e3a1f;
         padding: 0.6rem 1.2rem;
         font-weight: 600;
         transition: all 0.3s ease;
-        border: none;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border: 1px solid #4CAF50;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        background: #2E7D32;
     }
     
     /* Primary button */
     .stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
-        color: white;
+        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+        border: none;
     }
     
     .stButton > button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #66BB6A 0%, #81C784 100%);
+        background: linear-gradient(135deg, #66BB6A 0%, #4CAF50 100%);
     }
     
     /* Success box styling */
     .stSuccess {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        background: linear-gradient(135deg, #1e3a1f 0%, #142b15 100%);
         border-radius: 12px;
         padding: 1rem;
         border-left: 4px solid #4CAF50;
-        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
     }
     
     /* Warning box styling */
     .stWarning {
-        background: linear-gradient(135deg, #FFF3E0 0%, #FFE082 100%);
+        background: #3e2703;
         border-radius: 12px;
         padding: 1rem;
         border-left: 4px solid #FF9800;
-        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.15);
+        box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
     }
     
     /* Error box styling */
     .stError {
-        background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+        background: #3a1616;
         border-radius: 12px;
         padding: 1rem;
         border-left: 4px solid #F44336;
-        box-shadow: 0 2px 8px rgba(244, 67, 54, 0.15);
+        box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
     }
     
     /* File uploader styling */
     .stFileUploader {
-        background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+        background: linear-gradient(135deg, #0d293e 0%, #081a27 100%);
         border-radius: 15px;
         padding: 1.5rem;
         border: 2px dashed #2196F3;
@@ -281,14 +289,14 @@ st.markdown(
     }
     
     .stFileUploader:hover {
-        border-color: #1976D2;
-        background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+        border-color: #4fc3f7;
+        background: linear-gradient(135deg, #15456b 0%, #0d293e 100%);
         transform: scale(1.02);
     }
     
     /* Expander styling */
     .streamlit-expanderHeader {
-        background: linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%);
+        background: linear-gradient(135deg, #2b3a2f 0%, #1d2b20 100%);
         border-radius: 12px;
         padding: 0.8rem 1rem;
         font-weight: 600;
@@ -296,7 +304,7 @@ st.markdown(
     }
     
     .streamlit-expanderHeader:hover {
-        background: linear-gradient(135deg, #E0E0E0 0%, #BDBDBD 100%);
+        background: linear-gradient(135deg, #374a3c 0%, #2b3a2f 100%);
     }
     
     /* Title styling */
