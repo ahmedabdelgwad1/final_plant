@@ -57,6 +57,9 @@ def _is_db_ready() -> bool:
 
 # ── endpoints ────────────────────────────────────────────────────────────────
 
+@app.get("/")
+def root():
+    return {"message": "Plant Disease Diagnosis API is running. Check /docs for API documentation."}
 
 @app.get("/api/health")
 def health():
