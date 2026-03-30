@@ -12,6 +12,8 @@ Endpoints:
 import os
 import tempfile
 import json
+import threading
+from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
@@ -36,6 +38,37 @@ app.add_middleware(
 )
 
 # ── helpers ──────────────────────────────────────────────────────────────────
+
+_db_build_lock = threading.Lock()
+_db_build_status = {
+    "state": "idle",  # idle | running | success | error
+    "started_at": None,
+    "finished_at": None,
+    "last_error": None,
+    "last_result": None,
+}
+
+
+def _utc_now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _run_build_db() -> None:
+    try:
+        from infrastructure.create_db import create_database
+
+        result = create_database()
+        with _db_build_lock:
+            _db_build_status["state"] = "success"
+            _db_build_status["finished_at"] = _utc_now_iso()
+            _db_build_status["last_result"] = result
+            _db_build_status["last_error"] = None
+    except Exception as e:
+        with _db_build_lock:
+            _db_build_status["state"] = "error"
+            _db_build_status["finished_at"] = _utc_now_iso()
+            _db_build_status["last_error"] = str(e)
+            _db_build_status["last_result"] = None
 
 
 def _load_crops() -> list[dict]:
@@ -193,11 +226,22 @@ async def analyze_image(
 @app.post("/api/build-db")
 def build_database_endpoint():
     """
-    Admin endpoint to build/rebuild the knowledge base.
+    Admin endpoint to start build/rebuild in background.
     """
-    try:
-        from infrastructure.create_db import create_database
-        create_database()
-        return {"success": True, "message": "Database built successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to build database: {str(e)}")
+    with _db_build_lock:
+        if _db_build_status["state"] == "running":
+            return {"success": True, "message": "Database build is already running", "status": _db_build_status}
+        _db_build_status["state"] = "running"
+        _db_build_status["started_at"] = _utc_now_iso()
+        _db_build_status["finished_at"] = None
+        _db_build_status["last_error"] = None
+        _db_build_status["last_result"] = None
+
+    thread = threading.Thread(target=_run_build_db, daemon=True)
+    thread.start()
+    return {"success": True, "message": "Database build started", "status": _db_build_status}
+
+
+@app.get("/api/build-db/status")
+def build_database_status():
+    return {"success": True, "status": _db_build_status, "db_ready": _is_db_ready()}

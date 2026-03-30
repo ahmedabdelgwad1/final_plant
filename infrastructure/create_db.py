@@ -27,8 +27,7 @@ def _safe_join(values):
 def create_database():
     """Build the Chroma vector DB from all data_*.json files."""
     if not DATA_JSON_FILES:
-        print("No data_*.json files found.")
-        return
+        raise RuntimeError("No data_*.json files found.")
 
     documents = []
     for json_path in DATA_JSON_FILES:
@@ -111,26 +110,28 @@ def create_database():
 
             documents.append(Document(page_content=content, metadata=metadata))
 
+    if not documents:
+        raise RuntimeError("No documents were prepared from input files.")
+
     print(f"Total documents: {len(documents)}")
 
     embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
     print(f"Embedding model: {embedding_model}")
     embedding = HuggingFaceEmbeddings(model_name=embedding_model)
 
-    try:
-        if os.path.exists(CHROMA_DB_DIR):
-            import shutil
-            shutil.rmtree(CHROMA_DB_DIR)
-            print("Removed old database")
+    if os.path.exists(CHROMA_DB_DIR):
+        import shutil
+        shutil.rmtree(CHROMA_DB_DIR)
+        print("Removed old database")
 
-        Chroma.from_documents(
-            documents=documents,
-            embedding=embedding,
-            persist_directory=CHROMA_DB_DIR,
-        )
-        print("Database created successfully!")
-    except Exception as e:
-        print(f"Error creating database: {e}")
+    Chroma.from_documents(
+        documents=documents,
+        embedding=embedding,
+        persist_directory=CHROMA_DB_DIR,
+    )
+    print("Database created successfully!")
+
+    return {"success": True, "documents": len(documents), "persist_directory": CHROMA_DB_DIR}
 
 
 if __name__ == "__main__":
