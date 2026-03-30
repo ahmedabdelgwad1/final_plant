@@ -1,0 +1,49 @@
+# Git and CI
+.git
+.github
+
+# Python cache/build artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local databases and runtime files
+chroma_db/
+*.db
+*.sqlite
+*.sqlite3
+*.log
+logs/
+tmp/
+.cache/
+
+# Large local assets (images/videos/notebooks)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.mp4
+*.mov
+*.ipynb
+
+# OS/editor files
+.DS_Store
+.idea/
+.vscode/

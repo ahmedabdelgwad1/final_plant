@@ -135,6 +135,8 @@ crop health, prevention, treatment, and general agricultural advice.
 10. For list-style questions (e.g., "أهم أمراض الطماطم"), provide numbered points.
 11. For each disease in a list, include: اسم المرض، الأعراض المختصرة، السبب، والعلاج المختصر.
 12. Keep each bullet short and easy to scan.
+13. Do NOT use markdown headers like ### or ## or #.
+14. Use clean plain-text sections and numbered points only.
 """
 
 CHAT_PROMPT_EN = """
@@ -166,6 +168,8 @@ crop health, prevention, treatment, and general agricultural advice.
 10. For list-style questions (e.g., "most important tomato diseases"), provide numbered points.
 11. For each disease in a list, include: disease name, key symptoms, cause, and brief treatment.
 12. Keep each bullet concise and easy to scan.
+13. Do NOT use markdown headers like ### or ## or #.
+14. Use clean plain-text sections and numbered points only.
 """
 
 

@@ -335,7 +335,12 @@
       const arabic = isArabicMode();
       div.dir = arabic ? "rtl" : "ltr";
       div.style.textAlign = arabic ? "right" : "left";
-      div.textContent = String(text || "").replace(/\*\*/g, "");
+      div.textContent = String(text || "")
+        .replace(/\*\*/g, "")
+        .replace(/^###\s*/gm, "• ")
+        .replace(/^##\s*/gm, "• ")
+        .replace(/^#\s*/gm, "")
+        .replace(/\n{3,}/g, "\n\n");
       chatBody.appendChild(div);
       chatBody.scrollTop = chatBody.scrollHeight;
     }
