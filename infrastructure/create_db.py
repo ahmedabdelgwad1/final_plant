@@ -1,5 +1,6 @@
 import os
 import json
+from pathlib import Path
 
 from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
@@ -31,6 +32,7 @@ def create_database():
 
     documents = []
     for json_path in DATA_JSON_FILES:
+        json_path = Path(json_path)
         print(f"Reading {json_path.name} ...")
         try:
             with open(json_path, "r", encoding="utf-8") as f:
@@ -97,7 +99,9 @@ def create_database():
                 "disease_name_ar": disease_name_ar,
                 "disease_name_en": disease_name_en,
                 "pathogen_type_ar": item.get("pathogen_type_ar", ""),
+                "pathogen_type_en": item.get("pathogen_type_en", ""),
                 "short_description_ar": item.get("short_description_ar", ""),
+                "short_description_en": item.get("short_description_en", ""),
                 "treatment_chemical_ar": item.get("treatment_chemical_ar", ""),
                 "treatment_organic_ar": item.get("treatment_organic_ar", ""),
                 "favorable_conditions_ar": item.get("favorable_conditions_ar", ""),
@@ -109,7 +113,7 @@ def create_database():
 
     print(f"Total documents: {len(documents)}")
 
-    embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-base-en-v1.5")
+    embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
     print(f"Embedding model: {embedding_model}")
     embedding = HuggingFaceEmbeddings(model_name=embedding_model)
 

@@ -19,7 +19,7 @@ load_dotenv(override=True)
 _groq_api_key = os.getenv("GROQ_API_KEY")
 _vision_model = os.getenv("GROQ_VISION_MODEL", "llama-3.2-11b-vision-preview")
 _text_model = os.getenv("GROQ_TEXT_MODEL", "llama-3.3-70b-versatile")
-_embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-base-en-v1.5")
+_embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
 _tavily_api_key = os.getenv("TAVILY_API_KEY")
 _plantnet_api_key = os.getenv("PLANTNET_API_KEY")
 _trusted_domains = [
@@ -30,20 +30,47 @@ _trusted_domains = [
     "apsnet.org",
 ]
 
-vision_llm = ChatGroq(
-    model=_vision_model,
-    temperature=0,
-    api_key=_groq_api_key
-)
+vision_llm = None
+text_llm = None
+embedding = None
+vdb = None
 
-text_llm = ChatGroq(
-    model=_text_model,
-    temperature=0,
-    api_key=_groq_api_key
-)
 
-embedding = HuggingFaceEmbeddings(model_name=_embedding_model)
-vdb = Chroma(persist_directory=CHROMA_DB_DIR, embedding_function=embedding)
+def _get_vision_llm():
+    global vision_llm
+    if vision_llm is not None:
+        return vision_llm
+    if not _groq_api_key:
+        raise RuntimeError("GROQ_API_KEY is missing")
+    vision_llm = ChatGroq(
+        model=_vision_model,
+        temperature=0,
+        api_key=_groq_api_key
+    )
+    return vision_llm
+
+
+def _get_text_llm():
+    global text_llm
+    if text_llm is not None:
+        return text_llm
+    if not _groq_api_key:
+        raise RuntimeError("GROQ_API_KEY is missing")
+    text_llm = ChatGroq(
+        model=_text_model,
+        temperature=0,
+        api_key=_groq_api_key
+    )
+    return text_llm
+
+
+def _get_vdb():
+    global embedding, vdb
+    if vdb is not None:
+        return vdb
+    embedding = HuggingFaceEmbeddings(model_name=_embedding_model)
+    vdb = Chroma(persist_directory=CHROMA_DB_DIR, embedding_function=embedding)
+    return vdb
 
 
 def _build_filter(crop_type: str):
@@ -67,10 +94,11 @@ def _keyword_overlap_score(query: str, text: str) -> float:
 
 
 def _hybrid_retrieve(query: str, crop_type: str, k: int):
+    vdb_instance = _get_vdb()
     filter_dict = _build_filter(crop_type)
-    total = vdb._collection.count()
+    total = vdb_instance._collection.count()
     candidate_k = min(max(k * 3, 8), total)
-    candidates = vdb.similarity_search(query, k=candidate_k, filter=filter_dict)
+    candidates = vdb_instance.similarity_search(query, k=candidate_k, filter=filter_dict)
     alpha = to_float(os.getenv("HYBRID_ALPHA", 0.7), 0.7)
 
     scored = []
@@ -85,9 +113,10 @@ def _hybrid_retrieve(query: str, crop_type: str, k: int):
 
 
 def _retrieve_context(query: str, crop_type: str, retrieval_mode: str, k: int):
+    vdb_instance = _get_vdb()
     mode = (retrieval_mode or os.getenv("RETRIEVAL_MODE", "mmr")).lower()
     filter_dict = _build_filter(crop_type)
-    total = vdb._collection.count()
+    total = vdb_instance._collection.count()
     fetch_k = min(to_int(os.getenv("RETRIEVAL_FETCH_K", max(10, k * 3)), max(10, k * 3)), total)
     fetch_k = max(fetch_k, k)  # fetch_k must be >= k for MMR
     lambda_mult = to_float(os.getenv("RETRIEVAL_LAMBDA_MULT", 0.4), 0.4)
@@ -96,13 +125,13 @@ def _retrieve_context(query: str, crop_type: str, retrieval_mode: str, k: int):
         return _hybrid_retrieve(query=query, crop_type=crop_type, k=k)
 
     if mode == "similarity":
-        retriever = vdb.as_retriever(
+        retriever = vdb_instance.as_retriever(
             search_type="similarity",
             search_kwargs={"k": k, "filter": filter_dict},
         )
         return retriever.invoke(query)
 
-    retriever = vdb.as_retriever(
+    retriever = vdb_instance.as_retriever(
         search_type="mmr",
         search_kwargs={
             "k": k,
@@ -459,24 +488,17 @@ def _build_final_response(disease_ar, disease_en, top_doc, lang="ar"):
         cause_parts = [p for p in [pathogen, description] if p]
         cause = " — ".join(cause_parts) if cause_parts else "Cause not currently available."
 
-        treatment_organic = (meta or {}).get("treatment_organic_ar", "")
-        treatment_chemical = (meta or {}).get("treatment_chemical_ar", "")
         treatment_summary = (meta or {}).get("treatment_summary_en", "")
         treatment_lines = []
         if treatment_summary:
             treatment_lines.append(treatment_summary)
-        else:
-            if treatment_organic:
-                treatment_lines.append(f"• **Organic:** {treatment_organic}")
-            if treatment_chemical:
-                treatment_lines.append(f"• **Chemical:** {treatment_chemical}")
         treatment = "\n".join(treatment_lines) if treatment_lines else "Detailed treatment not available in the current database."
 
         disease_display = disease_en or disease_ar
         lines = [
-            f"🌱 **Disease:** {disease_display}",
-            f"🔬 **Cause:** {cause}",
-            f"💊 **Treatment:**\n{treatment}",
+            f"🌱 Disease: {disease_display}",
+            f"🔬 Cause: {cause}",
+            f"💊 Treatment:\n{treatment}",
         ]
     else:
         pathogen = (meta or {}).get("pathogen_type_ar", "")
@@ -488,16 +510,16 @@ def _build_final_response(disease_ar, disease_en, top_doc, lang="ar"):
         treatment_chemical = (meta or {}).get("treatment_chemical_ar", "")
         treatment_lines = []
         if treatment_organic:
-            treatment_lines.append(f"• **عضوي:** {treatment_organic}")
+            treatment_lines.append(f"• عضوي: {treatment_organic}")
         if treatment_chemical:
-            treatment_lines.append(f"• **كيميائي:** {treatment_chemical}")
+            treatment_lines.append(f"• كيميائي: {treatment_chemical}")
         treatment = "\n".join(treatment_lines) if treatment_lines else "العلاج التفصيلي غير متوفر في قاعدة البيانات الحالية."
 
         disease_display = disease_ar or disease_en
         lines = [
-            f"🌱 **المرض:** {disease_display}",
-            f"🔬 **السبب:** {cause}",
-            f"💊 **العلاج:**\n{treatment}",
+            f"🌱 المرض: {disease_display}",
+            f"🔬 السبب: {cause}",
+            f"💊 العلاج:\n{treatment}",
         ]
     return "\n\n".join(lines)
 
@@ -529,7 +551,7 @@ def vision_agent(state: State):
                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}},
             ]
         )
-        response = vision_llm.invoke([message])
+        response = _get_vision_llm().invoke([message])
         vision_desc = response.content.strip()
         print(f"👁️ Vision Analysis: {vision_desc}")
         return {"vision_description": vision_desc, "vision_error": None}
@@ -586,6 +608,7 @@ def response_agent(state: State):
 
 
 def verify_agent(state: State):
+    min_confidence = to_float(os.getenv("DIAGNOSIS_MIN_CONFIDENCE", 0.35), 0.35)
     plantnet_data = state.get("plantnet_data") or {}
     diseases = []
     if isinstance(plantnet_data, dict):
@@ -632,7 +655,7 @@ def verify_agent(state: State):
         if best_evidence is None or conf > best_evidence["confidence"]:
             best_evidence = {"name": name, "confidence": conf}
 
-    if best_evidence:
+    if best_evidence and best_evidence["confidence"] >= min_confidence:
         return {
             "final_disease": best_evidence["name"],
             "final_confidence": best_evidence["confidence"],
@@ -645,8 +668,8 @@ def verify_agent(state: State):
         "final_disease": None,
         "final_confidence": 0.0,
         "source": "Knowledge Base",
-        "verification_status": "unknown",
-        "verification_result": "No PlantNet or evidence candidates were available.",
+        "verification_status": "uncertain",
+        "verification_result": "No candidate reached minimum confidence for reliable diagnosis.",
     }
 
 
@@ -695,35 +718,32 @@ def evidence_agent(state: State):
 
 
 def chat_response(user_message: str, crop_type: str = None, chat_history: list = None, lang: str = "ar"):
-    try:
-        from infrastructure.prompts import chat_prompt_extend
+    from infrastructure.prompts import chat_prompt_extend
 
-        k = to_int(os.getenv("RETRIEVAL_K", 4), 4)
-        retrieval_mode = os.getenv("RETRIEVAL_MODE", "mmr")
-        context_docs = _retrieve_context(query=user_message, crop_type=crop_type, retrieval_mode=retrieval_mode, k=k)
+    k = to_int(os.getenv("RETRIEVAL_K", 4), 4)
+    retrieval_mode = os.getenv("RETRIEVAL_MODE", "mmr")
+    context_docs = _retrieve_context(query=user_message, crop_type=crop_type, retrieval_mode=retrieval_mode, k=k)
 
-        content = _format_retrieved_context(context_docs)
+    content = _format_retrieved_context(context_docs)
 
-        # Build a short chat history string for context
-        history_lines = []
-        if chat_history:
-            for msg in chat_history[-6:]:
-                role = "المستخدم" if msg.get("role") == "user" else "المساعد"
-                text = msg.get("content", "")[:200]
-                if text:
-                    history_lines.append(f"{role}: {text}")
-        history_str = "\n".join(history_lines)
+    # Build a short chat history string for context
+    history_lines = []
+    if chat_history:
+        for msg in chat_history[-6:]:
+            role = "المستخدم" if msg.get("role") == "user" else "المساعد"
+            text = msg.get("content", "")[:200]
+            if text:
+                history_lines.append(f"{role}: {text}")
+    history_str = "\n".join(history_lines)
 
-        prompt = chat_prompt_extend(
-            user_message=user_message,
-            content=content,
-            chat_history=history_str,
-            lang=lang,
-        )
+    prompt = chat_prompt_extend(
+        user_message=user_message,
+        content=content,
+        chat_history=history_str,
+        lang=lang,
+    )
 
-        message = HumanMessage(content=prompt)
-        response = text_llm.invoke([message])
-        text = getattr(response, "content", str(response)).strip()
-        return {"text": text, "context_count": len(context_docs or [])}
-    except Exception as e:
-        return {"text": f"خطأ في الشات: {e}", "context_count": 0}
+    message = HumanMessage(content=prompt)
+    response = _get_text_llm().invoke([message])
+    text = getattr(response, "content", str(response)).strip()
+    return {"text": text, "context_count": len(context_docs or [])}

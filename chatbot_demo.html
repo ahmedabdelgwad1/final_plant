@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plant Chatbot Demo</title>
+  <style>
+    :root {
+      --bg-1: #0c1b16;
+      --bg-2: #152d24;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-border: rgba(255, 255, 255, 0.14);
+      --text: #f4f8f5;
+      --muted: #b9c9c0;
+      --user: #000906;
+      --bot: rgba(255, 255, 255, 0.12);
+      --accent: #9de77b;
+      --danger: #ff6b6b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(157, 231, 123, 0.18), transparent 28%),
+        radial-gradient(circle at 85% 12%, rgba(90, 181, 255, 0.16), transparent 24%),
+        linear-gradient(130deg, var(--bg-1), var(--bg-2));
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .chat-app {
+      width: min(980px, 100%);
+      height: min(90vh, 860px);
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      box-shadow: 0 22px 44px rgba(0, 0, 0, 0.3);
+    }
+
+    .topbar {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border-bottom: 1px solid var(--panel-border);
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 180px 140px 110px;
+      gap: 10px;
+    }
+
+    .field {
+      width: 100%;
+      border: 1px solid var(--panel-border);
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--text);
+      border-radius: 10px;
+      height: 40px;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .field:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(157, 231, 123, 0.2);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      height: 40px;
+      transition: transform 0.16s ease, opacity 0.16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-connect {
+      background: linear-gradient(120deg, #6adf61, #2fa870);
+      color: #0d2419;
+    }
+
+    .btn-send {
+      background: linear-gradient(120deg, #bff59e, #72de7a);
+      color: #12331f;
+      width: 120px;
+      flex-shrink: 0;
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .chat-body {
+      overflow-y: auto;
+      padding: 18px 14px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+      scroll-behavior: smooth;
+    }
+
+    .bubble {
+      max-width: min(80%, 680px);
+      padding: 12px 14px;
+      border-radius: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border: 1px solid transparent;
+    }
+
+    .bubble.user {
+      justify-self: end;
+      background: linear-gradient(120deg, var(--user), #1a6f54);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .bubble.bot {
+      justify-self: start;
+      background: var(--bot);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .bubble.system {
+      justify-self: center;
+      background: rgba(157, 231, 123, 0.16);
+      color: #e9ffe0;
+      border-color: rgba(157, 231, 123, 0.45);
+      font-size: 14px;
+    }
+
+    .composer {
+      border-top: 1px solid var(--panel-border);
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .composer textarea {
+      width: 100%;
+      min-height: 52px;
+      max-height: 140px;
+      resize: vertical;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--panel-border);
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--text);
+      outline: none;
+      font: inherit;
+      line-height: 1.45;
+    }
+
+    .composer textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(157, 231, 123, 0.2);
+    }
+
+    .composer textarea::placeholder {
+      color: #a5bab0;
+    }
+
+    .composer-side {
+      width: 180px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .file-input {
+      width: 100%;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .file-name {
+      min-height: 16px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .upload-crop-select {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--panel-border);
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0 10px;
+      display: none;
+    }
+
+    @media (max-width: 860px) {
+      .chat-app {
+        height: 94vh;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .bubble {
+        max-width: 92%;
+      }
+
+      .composer {
+        flex-direction: column;
+      }
+
+      .composer-side {
+        width: 100%;
+      }
+
+      .btn-send {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="chat-app">
+    <header class="topbar">
+      <h1>Plant Disease Chatbot Demo</h1>
+      <div class="controls">
+        <input id="apiUrl" class="field" type="text" value="http://127.0.0.1:8000" />
+        <select id="cropType" class="field">
+          <option value="">General (No crop selected)</option>
+        </select>
+        <select id="langSelect" class="field">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select>
+        <button id="connectBtn" class="btn btn-connect" type="button">Connect</button>
+      </div>
+      <div id="status" class="status">Press Connect to load crops and test API.</div>
+    </header>
+
+    <section id="chatBody" class="chat-body"></section>
+
+    <footer class="composer">
+      <textarea id="messageInput" placeholder="Type your plant disease question..."></textarea>
+      <div class="composer-side">
+        <input id="imageInput" class="file-input" type="file" accept="image/*" />
+        <select id="uploadCropSelect" class="upload-crop-select">
+          <option value="">Choose crop for image upload</option>
+        </select>
+        <div id="fileName" class="file-name">Click image upload, then choose crop</div>
+        <button id="sendBtn" class="btn btn-send" type="button">Send</button>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const apiUrlInput = document.getElementById("apiUrl");
+    const cropSelect = document.getElementById("cropType");
+    const connectBtn = document.getElementById("connectBtn");
+    const langSelect = document.getElementById("langSelect");
+    const statusEl = document.getElementById("status");
+    const chatBody = document.getElementById("chatBody");
+    const messageInput = document.getElementById("messageInput");
+    const imageInput = document.getElementById("imageInput");
+    const uploadCropSelect = document.getElementById("uploadCropSelect");
+    const fileNameEl = document.getElementById("fileName");
+    const sendBtn = document.getElementById("sendBtn");
+
+    const chatHistory = [];
+    let connected = false;
+    let allowNextImageClick = false;
+
+    function isArabicMode() {
+      return (langSelect.value || "en") === "ar";
+    }
+
+    function applyLanguageLayout() {
+      const arabic = isArabicMode();
+      messageInput.dir = arabic ? "rtl" : "ltr";
+      messageInput.style.textAlign = arabic ? "right" : "left";
+      messageInput.placeholder = arabic
+        ? "اكتب سؤالك عن أمراض النبات..."
+        : "Type your plant disease question...";
+    }
+
+    function apiBase() {
+      return apiUrlInput.value.trim().replace(/\/$/, "");
+    }
+
+    function setStatus(message, isError = false) {
+      statusEl.textContent = message;
+      statusEl.className = isError ? "status error" : "status";
+    }
+
+    function addBubble(role, text) {
+      const div = document.createElement("div");
+      div.className = `bubble ${role}`;
+      const arabic = isArabicMode();
+      div.dir = arabic ? "rtl" : "ltr";
+      div.style.textAlign = arabic ? "right" : "left";
+      div.textContent = String(text || "").replace(/\*\*/g, "");
+      chatBody.appendChild(div);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function disableUi(isDisabled) {
+      connectBtn.disabled = isDisabled;
+      sendBtn.disabled = isDisabled;
+      messageInput.disabled = isDisabled;
+      imageInput.disabled = isDisabled;
+      uploadCropSelect.disabled = isDisabled;
+      cropSelect.disabled = isDisabled;
+      langSelect.disabled = isDisabled;
+      apiUrlInput.disabled = isDisabled;
+    }
+
+    function syncUploadCropOptions() {
+      uploadCropSelect.innerHTML = '<option value="">Choose crop for image upload</option>';
+      const options = cropSelect.querySelectorAll("option");
+      options.forEach((opt) => {
+        if (!opt.value) return;
+        const newOpt = document.createElement("option");
+        newOpt.value = opt.value;
+        newOpt.textContent = opt.textContent;
+        uploadCropSelect.appendChild(newOpt);
+      });
+      uploadCropSelect.value = cropSelect.value || "";
+    }
+
+    function updateImageInputState() {
+      const hasCrop = !!cropSelect.value;
+      if (!hasCrop) {
+        imageInput.value = "";
+        fileNameEl.textContent = "Click image upload, then choose crop";
+      } else if (!imageInput.files || !imageInput.files[0]) {
+        fileNameEl.textContent = "No image selected";
+      }
+    }
+
+    function showUploadCropPicker() {
+      uploadCropSelect.style.display = "block";
+      uploadCropSelect.focus();
+      if (typeof uploadCropSelect.showPicker === "function") {
+        try {
+          uploadCropSelect.showPicker();
+        } catch (_) {}
+      }
+    }
+
+    async function buildHttpError(response, endpointLabel) {
+      let details = "";
+      try {
+        const contentType = response.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          const json = await response.json();
+          details = json.detail || json.message || "";
+        } else {
+          const text = await response.text();
+          if (text.includes("<h1>500</h1>")) {
+            details = "Upstream platform error (500 page)";
+          } else if (text.trim()) {
+            details = text.replace(/\s+/g, " ").trim().slice(0, 120);
+          }
+        }
+      } catch (_) {
+        details = "";
+      }
+      const suffix = details ? `: ${details}` : "";
+      return new Error(`${endpointLabel} failed (${response.status})${suffix}`);
+    }
+
+    async function loadCrops() {
+      const response = await fetch(`${apiBase()}/api/crops`);
+      if (!response.ok) {
+        throw await buildHttpError(response, "Load crops");
+      }
+
+      const data = await response.json();
+      cropSelect.innerHTML = '<option value="">General (No crop selected)</option>';
+      (data.crops || []).forEach((crop) => {
+        const option = document.createElement("option");
+        option.value = crop.slug || "";
+        option.textContent = crop.name_en
+          ? `${crop.name_en}${crop.name_ar ? " - " + crop.name_ar : ""}`
+          : crop.slug || "Unknown";
+        cropSelect.appendChild(option);
+      });
+      syncUploadCropOptions();
+      return (data.crops || []).length;
+    }
+
+    async function checkHealth() {
+      const response = await fetch(`${apiBase()}/api/health`);
+      if (!response.ok) {
+        throw await buildHttpError(response, "Health check");
+      }
+      return response.json();
+    }
+
+    async function connectApi() {
+      disableUi(true);
+      setStatus("Connecting...");
+      try {
+        const [health, cropsCount] = await Promise.all([checkHealth(), loadCrops()]);
+        connected = true;
+        const readyFlag = health.db_ready ? "DB ready" : "DB not ready";
+        setStatus(`Connected successfully. ${readyFlag}. Loaded ${cropsCount} crops.`);
+        addBubble("system", "Connected to API. You can start chatting now.");
+      } catch (error) {
+        connected = false;
+        setStatus(error.message || "Connection failed", true);
+        addBubble(
+          "system",
+          `Connection failed: ${error.message || "Unknown error"}.`
+        );
+      } finally {
+        disableUi(false);
+      }
+    }
+
+    function serializedHistory() {
+      return JSON.stringify(
+        chatHistory.map((item) => ({
+          role: item.role,
+          content: item.content,
+        }))
+      );
+    }
+
+    async function sendMessage() {
+      const message = messageInput.value.trim();
+      const imageFile = imageInput.files && imageInput.files[0] ? imageInput.files[0] : null;
+      if (!message && !imageFile) return;
+      if (!connected) {
+        setStatus("Connect to API first.", true);
+        return;
+      }
+      if (imageFile && !cropSelect.value) {
+        setStatus("Select crop before uploading image.", true);
+        addBubble("system", "Please select a crop type first, then upload image.");
+        return;
+      }
+      if (message) {
+        addBubble("user", message);
+      } else {
+        addBubble("user", "[Image uploaded]");
+      }
+      if (imageFile) {
+        addBubble("system", `Image selected: ${imageFile.name}`);
+      }
+      chatHistory.push({ role: "user", content: message || "[Image uploaded]" });
+      messageInput.value = "";
+
+      const formData = new FormData();
+      formData.append("message", message);
+      formData.append("crop_type", cropSelect.value || "");
+      formData.append("lang", langSelect.value || "en");
+      formData.append("chat_history", serializedHistory());
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      sendBtn.disabled = true;
+      const oldLabel = sendBtn.textContent;
+      sendBtn.textContent = "Sending...";
+      setStatus(imageFile ? "Analyzing image..." : "Waiting for chatbot response...");
+
+      try {
+        const endpoint = imageFile ? "/api/analyze" : "/api/chat";
+        const response = await fetch(`${apiBase()}${endpoint}`, {
+          method: "POST",
+          body: formData,
+        });
+        if (!response.ok) {
+          throw await buildHttpError(response, imageFile ? "Analyze request" : "Chat request");
+        }
+        const data = await response.json();
+
+        const reply = data.reply || "No reply returned from API.";
+        addBubble("bot", reply);
+        chatHistory.push({ role: "assistant", content: reply });
+        setStatus("Response received.");
+        imageInput.value = "";
+        fileNameEl.textContent = "No image selected";
+      } catch (error) {
+        addBubble("system", `Error: ${error.message || "Unknown error"}`);
+        setStatus("Message failed. Check server logs.", true);
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = oldLabel;
+      }
+    }
+
+    connectBtn.addEventListener("click", connectApi);
+    sendBtn.addEventListener("click", sendMessage);
+    langSelect.addEventListener("change", () => {
+      applyLanguageLayout();
+    });
+    cropSelect.addEventListener("change", () => {
+      uploadCropSelect.value = cropSelect.value || "";
+      if (cropSelect.value) {
+        uploadCropSelect.style.display = "none";
+      }
+      updateImageInputState();
+    });
+    uploadCropSelect.addEventListener("change", () => {
+      cropSelect.value = uploadCropSelect.value;
+      if (uploadCropSelect.value) {
+        uploadCropSelect.style.display = "none";
+        setStatus("Crop selected. Choose image file.");
+        // Open the native file picker right after choosing crop.
+        allowNextImageClick = true;
+        imageInput.click();
+      }
+      updateImageInputState();
+    });
+    imageInput.addEventListener("click", (event) => {
+      if (allowNextImageClick) {
+        allowNextImageClick = false;
+        return;
+      }
+      if (!connected) {
+        event.preventDefault();
+        setStatus("Connect to API first.", true);
+        return;
+      }
+      event.preventDefault();
+      // Force crop selection on every upload attempt.
+      imageInput.value = "";
+      cropSelect.value = "";
+      uploadCropSelect.value = "";
+      setStatus("Choose crop for this image, then upload.");
+      showUploadCropPicker();
+      updateImageInputState();
+    });
+    imageInput.addEventListener("change", () => {
+      const file = imageInput.files && imageInput.files[0] ? imageInput.files[0] : null;
+      fileNameEl.textContent = file ? file.name : "No image selected";
+    });
+
+    messageInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    addBubble(
+      "system",
+      "Demo ready. Set API URL, click Connect, then start chatting."
+    );
+    applyLanguageLayout();
+    syncUploadCropOptions();
+    updateImageInputState();
+    connectApi();
+  </script>
+</body>
+
+</html>

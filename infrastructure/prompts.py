@@ -131,6 +131,10 @@ crop health, prevention, treatment, and general agricultural advice.
 6. You MUST answer ENTIRELY in Arabic. Every single word must be Arabic. Do NOT use any English words, terms, or disease names in English.
 7. Be concise but informative. Use a warm, helpful tone.
 8. If you don't know something, say so honestly and suggest what the user can do.
+9. Always organize the answer clearly using short sections and bullet points when useful.
+10. For list-style questions (e.g., "أهم أمراض الطماطم"), provide numbered points.
+11. For each disease in a list, include: اسم المرض، الأعراض المختصرة، السبب، والعلاج المختصر.
+12. Keep each bullet short and easy to scan.
 """
 
 CHAT_PROMPT_EN = """
@@ -158,6 +162,10 @@ crop health, prevention, treatment, and general agricultural advice.
 6. You MUST answer ENTIRELY in English. Every single word must be English. Do NOT use any Arabic words.
 7. Be concise but informative. Use a warm, helpful tone.
 8. If you don't know something, say so honestly and suggest what the user can do.
+9. Always organize the answer clearly using short sections and bullet points when useful.
+10. For list-style questions (e.g., "most important tomato diseases"), provide numbered points.
+11. For each disease in a list, include: disease name, key symptoms, cause, and brief treatment.
+12. Keep each bullet concise and easy to scan.
 """
 
 
@@ -179,4 +187,3 @@ def chat_prompt_extend(user_message: str, content: str, chat_history: str = "", 
         user_message=user_message,
     )
     return prompt.strip()
-

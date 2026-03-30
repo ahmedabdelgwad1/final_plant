@@ -42,7 +42,7 @@ def _load_crops() -> list[dict]:
     crops = []
     for path in DATA_JSON_FILES:
         try:
-            data = json.loads(path.read_text(encoding="utf-8"))
+            data = json.loads(Path(path).read_text(encoding="utf-8"))
         except Exception:
             continue
         slug = data.get("crop_type") or slugify_crop(data.get("crop_en", ""))
@@ -53,6 +53,23 @@ def _load_crops() -> list[dict]:
 def _is_db_ready() -> bool:
     db = Path(CHROMA_DB_DIR)
     return db.exists() and any(db.iterdir())
+
+
+def _guess_crop_from_text(message: str) -> str | None:
+    text = (message or "").strip().lower()
+    if not text:
+        return None
+    for crop in _load_crops():
+        slug = (crop.get("slug") or "").strip().lower()
+        name_en = (crop.get("name_en") or "").strip().lower()
+        name_ar = (crop.get("name_ar") or "").strip().lower()
+        if slug and slug in text:
+            return slug
+        if name_en and name_en in text:
+            return slug or slugify_crop(name_en)
+        if name_ar and name_ar in text:
+            return slug or slugify_crop(name_en or name_ar)
+    return None
 
 
 # ── endpoints ────────────────────────────────────────────────────────────────
@@ -93,12 +110,15 @@ async def chat(
     except Exception:
         history = []
 
-    result = chat_response(
-        user_message=message.strip(),
-        crop_type=crop_type.strip() or None,
-        chat_history=history,
-        lang=lang,
-    )
+    try:
+        result = chat_response(
+            user_message=message.strip(),
+            crop_type=crop_type.strip() or None,
+            chat_history=history,
+            lang=lang,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Chat service unavailable: {e}")
     
     return {
         "success": True,
@@ -109,7 +129,7 @@ async def chat(
 
 @app.post("/api/analyze")
 async def analyze_image(
-    crop_type: str = Form(...),
+    crop_type: str = Form(""),
     image: UploadFile = File(...),
     lang: str = Form("ar"),
     message: str = Form(""),
@@ -119,8 +139,9 @@ async def analyze_image(
     Requires: crop_type, image
     Returns: full diagnosis with details (disease, causes, treatment, scores)
     """
-    if not crop_type.strip():
-        raise HTTPException(status_code=400, detail="crop_type is required. Please select crop first.")
+    resolved_crop_type = crop_type.strip()
+    if not resolved_crop_type:
+        resolved_crop_type = _guess_crop_from_text(message)
     
     if not _is_db_ready():
         raise HTTPException(status_code=503, detail="Knowledge base not ready. Please build database first.")
@@ -134,7 +155,7 @@ async def analyze_image(
     # Run full diagnosis workflow
     result = Workflow().run({
         "chat_history": [],
-        "crop_type": crop_type.strip(),
+        "crop_type": resolved_crop_type or "",
         "retrieval_mode": os.getenv("RETRIEVAL_MODE", "mmr").lower(),
         "retrieval_k": to_int(os.getenv("RETRIEVAL_K", 4), 4),
         "query": message.strip() or None,
@@ -157,7 +178,7 @@ async def analyze_image(
     return {
         "success": True,
         "reply": response_text,
-        "crop_type": crop_type.strip(),
+        "crop_type": resolved_crop_type or None,
         "details": {
             "symptom_scores": result.get("symptom_scores", []),
             "plantnet_result": result.get("plantnet_result"),
@@ -180,4 +201,3 @@ def build_database_endpoint():
         return {"success": True, "message": "Database built successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to build database: {str(e)}")
-
