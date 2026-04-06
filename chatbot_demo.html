@@ -66,7 +66,7 @@
 
     .controls {
       display: grid;
-      grid-template-columns: 1fr 180px 140px 110px;
+      grid-template-columns: 1fr 140px 110px;
       gap: 10px;
     }
 
@@ -263,9 +263,6 @@
       <h1>Plant Disease Chatbot Demo</h1>
       <div class="controls">
         <input id="apiUrl" class="field" type="text" value="http://127.0.0.1:8000" />
-        <select id="cropType" class="field">
-          <option value="">General (No crop selected)</option>
-        </select>
         <select id="langSelect" class="field">
           <option value="en">English</option>
           <option value="ar">العربية</option>
@@ -292,7 +289,6 @@
 
   <script>
     const apiUrlInput = document.getElementById("apiUrl");
-    const cropSelect = document.getElementById("cropType");
     const connectBtn = document.getElementById("connectBtn");
     const langSelect = document.getElementById("langSelect");
     const statusEl = document.getElementById("status");
@@ -306,6 +302,8 @@
     const chatHistory = [];
     let connected = false;
     let allowNextImageClick = false;
+    let selectedCrop = "";
+    let availableCrops = [];
 
     function isArabicMode() {
       return (langSelect.value || "en") === "ar";
@@ -351,26 +349,25 @@
       messageInput.disabled = isDisabled;
       imageInput.disabled = isDisabled;
       uploadCropSelect.disabled = isDisabled;
-      cropSelect.disabled = isDisabled;
       langSelect.disabled = isDisabled;
       apiUrlInput.disabled = isDisabled;
     }
 
     function syncUploadCropOptions() {
       uploadCropSelect.innerHTML = '<option value="">Choose crop for image upload</option>';
-      const options = cropSelect.querySelectorAll("option");
-      options.forEach((opt) => {
-        if (!opt.value) return;
+      availableCrops.forEach((crop) => {
         const newOpt = document.createElement("option");
-        newOpt.value = opt.value;
-        newOpt.textContent = opt.textContent;
+        newOpt.value = crop.slug || "";
+        newOpt.textContent = crop.name_en
+          ? `${crop.name_en}${crop.name_ar ? " - " + crop.name_ar : ""}`
+          : crop.slug || "Unknown";
         uploadCropSelect.appendChild(newOpt);
       });
-      uploadCropSelect.value = cropSelect.value || "";
+      uploadCropSelect.value = selectedCrop || "";
     }
 
     function updateImageInputState() {
-      const hasCrop = !!cropSelect.value;
+      const hasCrop = !!selectedCrop;
       if (!hasCrop) {
         imageInput.value = "";
         fileNameEl.textContent = "Click image upload, then choose crop";
@@ -418,17 +415,9 @@
       }
 
       const data = await response.json();
-      cropSelect.innerHTML = '<option value="">General (No crop selected)</option>';
-      (data.crops || []).forEach((crop) => {
-        const option = document.createElement("option");
-        option.value = crop.slug || "";
-        option.textContent = crop.name_en
-          ? `${crop.name_en}${crop.name_ar ? " - " + crop.name_ar : ""}`
-          : crop.slug || "Unknown";
-        cropSelect.appendChild(option);
-      });
+      availableCrops = data.crops || [];
       syncUploadCropOptions();
-      return (data.crops || []).length;
+      return availableCrops.length;
     }
 
     async function checkHealth() {
@@ -477,7 +466,7 @@
         setStatus("Connect to API first.", true);
         return;
       }
-      if (imageFile && !cropSelect.value) {
+      if (imageFile && !selectedCrop) {
         setStatus("Select crop before uploading image.", true);
         addBubble("system", "Please select a crop type first, then upload image.");
         return;
@@ -495,7 +484,7 @@
 
       const formData = new FormData();
       formData.append("message", message);
-      formData.append("crop_type", cropSelect.value || "");
+      formData.append("crop_type", imageFile ? selectedCrop : "");
       formData.append("lang", langSelect.value || "en");
       formData.append("chat_history", serializedHistory());
       if (imageFile) {
@@ -538,15 +527,8 @@
     langSelect.addEventListener("change", () => {
       applyLanguageLayout();
     });
-    cropSelect.addEventListener("change", () => {
-      uploadCropSelect.value = cropSelect.value || "";
-      if (cropSelect.value) {
-        uploadCropSelect.style.display = "none";
-      }
-      updateImageInputState();
-    });
     uploadCropSelect.addEventListener("change", () => {
-      cropSelect.value = uploadCropSelect.value;
+      selectedCrop = uploadCropSelect.value || "";
       if (uploadCropSelect.value) {
         uploadCropSelect.style.display = "none";
         setStatus("Crop selected. Choose image file.");
@@ -569,7 +551,7 @@
       event.preventDefault();
       // Force crop selection on every upload attempt.
       imageInput.value = "";
-      cropSelect.value = "";
+      selectedCrop = "";
       uploadCropSelect.value = "";
       setStatus("Choose crop for this image, then upload.");
       showUploadCropPicker();
