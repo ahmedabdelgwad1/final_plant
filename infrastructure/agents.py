@@ -17,7 +17,7 @@ from shared.utils import to_int, to_float
 load_dotenv(override=True)
 
 _groq_api_key = os.getenv("GROQ_API_KEY")
-_vision_model = os.getenv("GROQ_VISION_MODEL", "llama-3.2-11b-vision-preview")
+_vision_model = os.getenv("GROQ_VISION_MODEL", "meta-llama/llama-4-scout-17b-16e-instruct")
 _text_model = os.getenv("GROQ_TEXT_MODEL", "llama-3.3-70b-versatile")
 _embedding_model = os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3")
 _tavily_api_key = os.getenv("TAVILY_API_KEY")
