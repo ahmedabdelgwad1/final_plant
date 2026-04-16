@@ -22,6 +22,10 @@ COPY . .
 # Set up environment variables
 ENV HOST=0.0.0.0
 ENV PORT=7860
+ENV PYTHONPATH=/app
+
+# Build the Chroma DB inside the container
+RUN python infrastructure/create_db.py
 
 # Command to run the application using uvicorn
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "7860"]
